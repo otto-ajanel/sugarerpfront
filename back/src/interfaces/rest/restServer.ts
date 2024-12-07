@@ -1,6 +1,6 @@
 import express from 'express';
 import { getUsers, createUser } from '../../adapters/rest/controllers';
-import { UserService } from '../../application/userService';
+import { UserService } from '../../application/userServices';
 import { UserRepository } from '../../domain/repositories/userRepository';
 
 const userRepository = new UserRepository();
