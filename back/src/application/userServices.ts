@@ -3,7 +3,7 @@ import { User } from '../domain/models/user';
 
 export interface IUserService {
   getUsers(): Promise<User[]>;
-  createUser(name: string): Promise<User>;
+  createUser(user_mail: string): Promise<User>;
 }
 
 export class UserService implements IUserService {

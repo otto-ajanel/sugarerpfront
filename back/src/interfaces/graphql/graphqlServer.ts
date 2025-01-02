@@ -1,41 +1,30 @@
 import { ApolloServer } from '@apollo/server';
+import {expressMiddleware} from '@apollo/server/express4'
 import express from 'express';
 import  resolvers  from '../../adapters/graphql/resolvers';
 import { typeDefs } from '../../adapters/graphql/schema';
-const { startStandaloneServer } = require('@apollo/server/standalone');
-
-import { UserService } from '../../application/userServices';
+import { ApolloServerPluginCacheControl } from '@apollo/server/plugin/cacheControl';
+import { ApolloServerPluginInlineTrace } from '@apollo/server/plugin/inlineTrace';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { UserService,IUserService } from '../../application/userServices';
 import { UserRepository } from '../../domain/repositories/userRepository';
 
 export const graphqlServer = async (app: express.Application) => {
-  const userRepository = new UserRepository();
-  const userService = new UserService(userRepository);
-
+ 
   const server = new ApolloServer({
     typeDefs,
-    resolvers
-    //,context: () => ({ userService })
-  });
-  async function startServer() {
-    // Inicia el servidor de Apollo sin necesidad de Express
-    const { url } = await startStandaloneServer(server, {
-      listen: { port: 3000 },  // Configura el puerto para el servidor GraphQL
-    });
-  
-    console.log(`GraphQL server is running at ${url}`);
-  }
-  
-  startServer().catch((error) => {
-    console.error('Error starting Apollo Server:', error);
-  });
+    resolvers, 
+    plugins: [
+      ApolloServerPluginLandingPageLocalDefault(),  // Página de inicio de Apollo
+      ApolloServerPluginCacheControl(),
+      ApolloServerPluginInlineTrace(),
+    ],
+  });-
+  await server.start()
+  app.use(
+    '/graphql', 
+    expressMiddleware(server) as any  
+  );
 
-  /* await server.start();
-  //app.use('/graphql', server.getMiddleware());
-  server.applyMiddleware({ app, path: '/graphql' });
-
-  // Configura el puerto en el cual Express estará escuchando
-  app.listen(3001, () => {
-    console.log('REST API server listening on port 3001');
-    console.log('GraphQL server listening on port 3000');
-  }); */
 };
+  

@@ -1,28 +1,32 @@
-import { IUserService } from '../../application/userServices';  // Asegúrate de importar el servicio correctamente
+import { IUserRepository } from '../../domain/repositories/userRepository';  
+import { UserRepository } from '../../domain/repositories/userRepository';  // Asegúrate de tener esta importación
+import { UserService } from '../../application/userServices';  // Asegúrate de que UserService esté correctamente importado
 
-// Resolver de GraphQL con tipos explicitos
+const userRepository: IUserRepository = new UserRepository();
+const userService: UserService = new UserService(userRepository);
+
 const resolvers = {
   Query: {
     users: async (
-      _: unknown,  // Aquí tipamos _ como `unknown` si no se usa
-      __: unknown,  // Igualmente, si no usas el segundo parámetro, lo tipamos como `unknown`
-      { userService }: { userService: IUserService }  // Desestructuramos el servicio con el tipo correspondiente
+      _: unknown,  
+      __: unknown,  
     ) => {
-      const users = await userService.getUsers();
-      return users;
+      
+      const data = await userService.getUsers();
+      return data;
     },
   },
   
-  Mutation: {
+/*   Mutation: {
     createUser: async (
-      _: unknown,  // Al igual que en el caso anterior, si no usas el parámetro, lo podemos tipar como `unknown`
-      { name }: { name: string },  // Aquí desestructuramos `name` y le damos el tipo `string`
+      _: unknown,  
+      { name }: { name: string },  
       { userService }: { userService: IUserService }
     ) => {
       const user = await userService.createUser(name);
       return user;
     },
-  },
+  }, */
 };
 
 export default resolvers;
