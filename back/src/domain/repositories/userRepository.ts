@@ -1,19 +1,21 @@
+import sugarerpClientDB from '../../infrastructure/db/postgresql/sugarerpConexion';
 import { User } from '../models/user';
 
 export interface IUserRepository {
   getAllUsers(): Promise<User[]>;
-  createUser(name: string): Promise<User>;
+  createUser(email: string): Promise<User>;
 }
 
 export class UserRepository implements IUserRepository {
   private users: User[] = [];
 
   async getAllUsers(): Promise<User[]> {
-    return this.users;
+    const dataUsers = await sugarerpClientDB.select("*").from('user')
+    return dataUsers;
   }
 
-  async createUser(name: string): Promise<User> {
-    const user = new User((this.users.length + 1).toString(), name);
+  async createUser(email: string): Promise<User> {
+    const user = new User(1, email);
     this.users.push(user);
     return user;
   }

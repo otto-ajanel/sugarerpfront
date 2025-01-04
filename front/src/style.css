@@ -1,0 +1,179 @@
+
+
+@layer tailwind-base, primevue, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+/* Primary and Surface Palettes */
+:root {
+  --p-primary-50:  #e6f4f8; 
+  --p-primary-100: #cde9f1; 
+  --p-primary-200: #9fd3e0; 
+  --p-primary-300: #0b475c; 
+  --p-primary-400: #0d5169; 
+  --p-primary-500: #0b475c; 
+  --p-primary-600: #093d4f; 
+  --p-primary-700: #073243; 
+  --p-primary-800: #052737; 
+  --p-primary-900: #031b26; 
+  
+  --p-surface-0: #ffffff;
+  --p-surface-50: #f8fafc;
+  --p-surface-100: #f1f5f9;
+  --p-surface-200: #e2e8f0;
+  --p-surface-300: #cbd5e1;
+  --p-surface-400: #94a3b8;
+  --p-surface-500: #64748b;
+  --p-surface-600: #475569;
+  --p-surface-700: #334155;
+  --p-surface-800: #1e293b;
+  --p-surface-900: #0f172a;
+  --p-surface-950: #020617;
+  --p-content-border-radius: 6px;
+}
+
+/* Light */
+:root {
+  --p-primary-color: var(--p-primary-500);
+  --p-primary-contrast-color: var(--p-surface-0);
+  --p-primary-hover-color: var(--p-primary-600);
+  --p-primary-active-color: var(--p-primary-700);
+  --p-content-border-color: var(--p-surface-200);
+  --p-content-hover-background: var(--p-surface-100);
+  --p-content-hover-color: var(--p-surface-800);
+  --p-highlight-background: var(--p-primary-50);
+  --p-highlight-color: var(--p-primary-700);
+  --p-highlight-focus-background: var(--p-primary-100);
+  --p-highlight-focus-color: var(--p-primary-800);
+  --p-text-color: var(--p-surface-100);
+  --p-text-hover-color: var(--p-surface-800);
+  --p-text-muted-color: var(--p-surface-500);
+  --p-text-hover-muted-color: var(--p-surface-600);
+}
+
+/* 
+* Dark Mode
+* Defaults to system, change the selector to match the darkMode in tailwind.config.
+* For example; 
+* darkMode: ['selector', '[class*="app-dark"]'] 
+* should be;
+* :root[class="app-dark"] {
+*/
+@media (prefers-color-scheme: dark) {
+  :root {
+      --p-primary-color: var(--p-primary-400);
+      --p-primary-contrast-color: var(--p-surface-900);
+      --p-primary-hover-color: var(--p-primary-300);
+      --p-primary-active-color: var(--p-primary-200);
+      --p-content-border-color: var(--p-surface-700);
+      --p-content-hover-background: var(--p-surface-800);
+      --p-content-hover-color: var(--p-surface-0);
+      --p-highlight-background: color-mix(in srgb, var(--p-primary-400), transparent 84%);
+      --p-highlight-color: rgba(255, 255, 255, 0.87);
+      --p-highlight-focus-background: color-mix(in srgb, var(--p-primary-400), transparent 76%);
+      --p-highlight-focus-color: rgba(255, 255, 255, 0.87);
+      --p-text-color: var(--p-surface-0);
+      --p-text-hover-color: var(--p-surface-0);
+      --p-text-muted-color: var(--p-surface-400);
+      --p-text-hover-muted-color: var(--p-surface-300);
+  }
+}
+
+.roboto-thin {
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.roboto-light {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.roboto-regular {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.roboto-medium {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.roboto-bold {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.roboto-black {
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.roboto-thin-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.roboto-light-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.roboto-regular-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.roboto-medium-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.roboto-bold-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.roboto-black-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}
+
+:root {
+  --body-bg: var(--p-surface-50);
+  --body-text-color: var(--p-surface-900);
+  --card-border: 1px solid var(--border-color);
+  --card-bg: var(--p-surface-0);
+  --border-color: var(--p-surface-200);
+  --text-color: var(--p-surface-700);
+  --overlay-background: #ffffff;
+}
+
+:root[class='p-dark'] {
+  --body-bg: var(--p-surface-950);
+  --body-text-color: var(--p-surface-50);
+  --card-border: 1px solid transparent;
+  --card-bg: var(--p-surface-900);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --text-color: var(--p-surface-0);
+  --overlay-background: var(--p-surface-900);
+}
