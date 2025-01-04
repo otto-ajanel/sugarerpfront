@@ -23,8 +23,6 @@ export const graphqlServer = async (app: express.Application) => {
   await server.start()
   app.use(
     '/graphql', 
-    expressMiddleware(server) as any  
+    expressMiddleware(server) as any
   );
-
 };
-  
