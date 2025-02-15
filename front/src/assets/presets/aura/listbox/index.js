@@ -2,7 +2,7 @@ export default {
     root: ({ props }) => ({
         class: [
             'rounded-md',
-
+            
             // Colors
             { 'bg-surface-0 dark:bg-surface-900': !props.disabled },
             'text-surface-700 dark:text-white/80',
