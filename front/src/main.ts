@@ -1,26 +1,57 @@
 import { createApp } from 'vue'
 import './style.css'
+import {router} from './routes/index.ts'
 import App from './App.vue'
-import './assets/flag.css'
+//import './assets/flag.css'
 import PrimeVue from 'primevue/config';
+import ConfirmationService from 'primevue/confirmationservice'
+import ToastService from 'primevue/toastservice'
+import  DialogService  from 'primevue/dialogservice'
+import {
+    Tooltip,
+    BadgeDirective,
+    FocusTrap,
+    AnimateOnScroll
+    , Button
+    , Image
+    , IconField
+    , InputText
+    , InputIcon
+    , FloatLabel
+    , MegaMenu
+} from 'primevue'
 // @ts-ignore
-import Noir from '../src/assets/Noir.js';
-
+import Aura  from './assets/presets/aura';
+// @ts-ignore
+import Noir from './assets/presets/Noir'
 import 'primeicons/primeicons.css'
 
 const app = createApp(App);
 app.use(PrimeVue, {
-    theme:{
-        preset:Noir,
-        options: {
-            prefix: 'p',
-            darkModeSelector: '.p-dark',
-            cssLayer:{
-                name: 'primevue',
-                order: 'tailwind-base, primevue, tailwind-utilities'
-            }
-        }
+//unstyled:true,
+ripple:true,
+//pt:Aura
+theme:{
+    preset:Noir
     }
 });
+
+app.use(ConfirmationService);
+app.use(ToastService);
+app.use(DialogService);
+
+app.component("Button", Button)
+app.component("Image", Image)
+app.component("IconField",IconField)
+app.component("InputText", InputText)
+app.component("InputIcon",InputIcon)
+app.component("FloatLabel",FloatLabel)
+app.component("MegaMenu",MegaMenu)
+app.directive('tooltip', Tooltip);
+app.directive('badge', BadgeDirective);
+app.directive('focustrap', FocusTrap);
+app.directive('animateonscroll', AnimateOnScroll);
+
+app.use(router)
 
 app.mount('#app')

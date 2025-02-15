@@ -5,9 +5,10 @@ export default {
 
             // Flexbox
             'flex',
+            'w-full',
 
             // Shape & Size
-            'rounded-md',
+            'rounded-none',
 
             // Color
             'bg-surface-0 dark:bg-surface-900',
@@ -130,14 +131,14 @@ export default {
 
             // Position
             'static sm:absolute',
-            'z-10',
+            'z-100',
             {
                 'sm:left-full top-0': !props.horizontal
             }
         ]
     }),
     grid: {
-        class: 'flex flex-wrap sm:flex-nowrap'
+        class: 'flex flex-wrap'
     },
     column: {
         class: 'w-full sm:w-1/2'
@@ -169,7 +170,7 @@ export default {
 
             // Size
             'w-7',
-            'h-7',
+            'h-8',
 
             // Shape
             'rounded-full',
