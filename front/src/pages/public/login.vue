@@ -1,11 +1,11 @@
 <template>
-<main id="login" class="h-full flex items-center content-center p-36">
-    <div class="w-1/2">
+<main id="login" class="h-full w-full flex flex-col sm:flex-row  items-center content-center p-8 sm:p-36">
+    <div class="w-full">
         <Image :src="imageLogin"/>
     </div>
-    <div class="w-1/2 flex justify-center content-center items-center">
+    <div class="w-full flex justify-center content-center items-center">
 
-        <form class=" w-96 flex flex-col items-center p-8  gap-4 rounded-lg shadow-2xl">
+        <form class=" w-full sm:w-96 flex flex-col items-center p-8  gap-4 rounded-lg shadow-2xl">
             <label class="text-primary font-bold" for="">LOGIN</label>
             <IconField  class=" w-full">
                 <InputIcon class="pi pi-envelope" />
