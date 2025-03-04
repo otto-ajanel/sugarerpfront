@@ -1,13 +1,13 @@
 <template>
-    <main class="flex w-full bg-slate-900 text-white p-8 gap-8 justify-center">
-        <section class="w-1/3 flex flex-col  justify-center items-center">
+    <main class="flex flex-col sm:flex-row w-full bg-slate-900 text-white p-8 gap-8 justify-center">
+        <section class="w-1/3 flex-col sm:w-1/3 flex sm:flex-col  justify-center items-center content-center">
             <Image
             :src="logo"
             width="150"
             />
             <h3>Otto Ajanel </h3>
         </section>
-        <section class="w-1/3 flex flex-col items-center">
+        <section class="w-full  sm:w-1/3 flex flex-col sm:flex-col items-center">
             <h3 class="font-bold">Stack</h3>
             <br>
             <p>Vuejs</p>
@@ -18,7 +18,7 @@
 
 
         </section>
-        <section class="w-1/3 flex flex-col justify-center ">
+        <section class="w-full flex-col sm:w-1/3 flex sm:flex-col justify-center ">
 
             <div class="flex justify-center gap-2">
                 <FloatLabel>
@@ -46,7 +46,7 @@
 </template>
 <script setup lang="ts">
 import logo from '../../../assets/imgs/oaLogo.png'
-
+    
 
 import {ref} from 'vue'
 const email = ref("")

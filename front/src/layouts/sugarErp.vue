@@ -1,3 +1,6 @@
 <template>
-    <h2>erp</h2>
+    <MenuSugarERP/>
 </template>
+<script setup lang="ts">
+import MenuSugarERP from "../../src/components/SugarERP/Menu/index.vue"
+</script>

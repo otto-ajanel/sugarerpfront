@@ -1,7 +1,7 @@
 <template>
     <main id="home">
-        <div class=" h-screen  w-full flex justify-center content-center p-8 items-center ">
-            <div class=" w-1/2 flex flex-col p-8">
+        <div class=" h-screen flex w-full flex-col sm:flex-row justify-center content-center p-8 items-center ">
+            <div class="w-full sm:w-1/2 flex flex-col  p-8">
 
                 <h2>
                     Building Innovative Systems for the <span> Digital</span> Age
@@ -12,7 +12,7 @@
                 </p>
                 <Button label="Contact" severity="info" raised class="max-w-40 mt-8"/>
             </div>
-            <div class="w-1/2 flex justify-center">
+            <div class="w-full flex justify-center">
                 <Galleria :value="images" :numVisible="2" containerStyle="max-width: 600px; max-heigth: 150px" :showThumbnails="false"
                     :showIndicators="false" :circular="true" :autoPlay="true" :transitionInterval="8000">
                     <template #item="slotProps">
