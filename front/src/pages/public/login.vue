@@ -1,5 +1,5 @@
 <template>
-<main id="login" class="h-full w-full flex flex-col sm:flex-row  items-center content-center p-8 sm:p-36">
+    <main id="login" class="h-full w-full flex flex-col sm:flex-row  items-center content-center p-8 sm:p-36">
     <div class="w-full">
         <Image :src="imageLogin"/>
     </div>
@@ -16,18 +16,26 @@
                 <InputText v-model="pass" placeholder="Password" type="password" class="w-full"/>
             </IconField>
 
-            <Button label="Sign" class="w-full" />
+            <Button label="Sign" class="w-full" @click="login(email.value,pass.value, toast)" />
         </form>
-    </div>
+        <Toast />
 
+    </div>
 </main>
 </template>
-<script lang="ts" setup>
-import {ref} from 'vue'
+<script  setup lang="ts">
+import {storeToRefs} from 'pinia'
+import { useToast } from "primevue/usetoast";
+import {ref} from 'vue' 
+import {authStore} from '../../stores/auth'
 import imageLogin from '../../assets/imgs/homeImages/loginimages/undraw_design-components_529l.svg'
+
+const toast = useToast()
+
 
 const email  =  ref("")
 const pass  =  ref("")
+const {login}= authStore()
 
 </script>
 

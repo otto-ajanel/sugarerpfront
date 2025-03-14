@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import './style.css'
 import {router} from './routes/index.ts'
 import App from './App.vue'
@@ -19,6 +20,7 @@ import {
     , InputIcon
     , FloatLabel
     , MegaMenu
+    , Toast
 } from 'primevue'
 // @ts-ignore
 import Aura  from './assets/presets/aura';
@@ -35,6 +37,9 @@ theme:{
     preset:Noir
     }
 });
+const pinia  = createPinia()
+app.use(pinia)
+app.use(router)
 
 app.use(ConfirmationService);
 app.use(ToastService);
@@ -47,11 +52,12 @@ app.component("InputText", InputText)
 app.component("InputIcon",InputIcon)
 app.component("FloatLabel",FloatLabel)
 app.component("MegaMenu",MegaMenu)
+app.component("Toast",Toast)
+
 app.directive('tooltip', Tooltip);
 app.directive('badge', BadgeDirective);
 app.directive('focustrap', FocusTrap);
 app.directive('animateonscroll', AnimateOnScroll);
 
-app.use(router)
 
 app.mount('#app')

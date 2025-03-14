@@ -3,7 +3,6 @@ import express from 'express';
 import { getUsers, createUser } from '../../adapters/rest/controllerss';
 import { UserService } from '../../application/userServices';
 import { UserRepository } from '../../domain/repositories/userRepository';
-
 const userRepository = new UserRepository();
 const userService = new UserService(userRepository);
 
@@ -16,6 +15,7 @@ restServer.use(express.urlencoded({ extended:true }));
 // Examples
 restServer.get('/users', (req, res) => getUsers(req, res, userService));
 restServer.post('/users', (req, res) => createUser(req, res, userService));
+
 restServer.use('/apiv1',routesV1)
 
 export default restServer
