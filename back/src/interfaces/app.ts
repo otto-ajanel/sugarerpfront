@@ -1,9 +1,6 @@
 import express from 'express';
 import { graphqlServer } from './graphql/graphqlServer';
-import { restServer } from './rest/restServer';
-
-
-restServer.use(express.json());
+import  restServer  from './rest/restServer';
 
 
   graphqlServer(restServer);

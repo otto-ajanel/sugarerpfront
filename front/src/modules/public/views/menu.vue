@@ -7,7 +7,7 @@
             </template>
             
             <template #end>
-                <Button as="a" icon="pi pi-user" variant="text" rounded aria-label="Filter" label="SIGN" href="#login"/>
+                <Button as="a" icon="pi pi-user" variant="text" rounded aria-label="Filter" label="login" href="#login"/>
                 <Button as="a" icon="pi pi-github" severity="secondary" variant="text" rounded aria-label="Bookmark" href="https://github.com/otto-ajanel"/>
 
             </template>
@@ -40,11 +40,6 @@ const items = ref([
     {
         label: 'About',
         
-    },
-    {
-        label: 'Sports',
-        icon: 'pi pi-clock',
-    
     }
 ]);
 </script>

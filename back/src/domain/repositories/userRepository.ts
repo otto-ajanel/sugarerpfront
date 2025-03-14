@@ -16,7 +16,7 @@ export class UserRepository implements IUserRepository {
   }
 
   async createUser(email: string): Promise<User> {
-    const user = new User(1, email, 1, 1);
+    const user = new User(1, email, "heeleo", 1);
     this.users.push(user);
     return user;
   }

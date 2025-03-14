@@ -2,14 +2,18 @@ import sugarerpClientDB from '../../infrastructure/db/postgresql/sugarerpConexio
 import { User } from '../models/user';
 
 export interface IAuthRepository {
-  getUser(): Promise<User>;
+  getUser(email:string, password:string): Promise<User>;
 }
 
 export class AuthRepository implements IAuthRepository {
 
-  async getUser(): Promise<User> {
-    const dataUser = await sugarerpClientDB.select("*").from('user')
-    .where("user_id", 10000)
+  async getUser(email:string, password:string): Promise<User> {
+
+    const dataUser  = await sugarerpClientDB.select("*").from('users')
+   .where({
+    email:email,
+    password:password
+   })
     .first()
     return dataUser;
   }
