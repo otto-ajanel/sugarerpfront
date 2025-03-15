@@ -1,5 +1,7 @@
 import express from 'express';
-// esto se eliminadar
+import cors from 'cors'
+
+
 import { getUsers, createUser } from '../../adapters/rest/controllerss';
 import { UserService } from '../../application/userServices';
 import { UserRepository } from '../../domain/repositories/userRepository';
@@ -9,6 +11,12 @@ const userService = new UserService(userRepository);
 //iniciand o app
  import routesV1 from '../../adapters/rest/routers/v1/index'
 const restServer = express();
+const corsOptions = {
+    origin: '*',  
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],  
+    allowedHeaders: ['Content-Type', 'Authorization'], 
+};
+restServer.use(cors(corsOptions))
 
 restServer.use(express.json());
 restServer.use(express.urlencoded({ extended:true }));

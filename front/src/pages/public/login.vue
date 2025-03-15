@@ -16,7 +16,7 @@
                 <InputText v-model="pass" placeholder="Password" type="password" class="w-full"/>
             </IconField>
 
-            <Button label="Sign" class="w-full" @click="login(email.value,pass.value, toast)" />
+            <Button label="Sign" class="w-full" @click="login(email,pass, toast)" />
         </form>
         <Toast />
 

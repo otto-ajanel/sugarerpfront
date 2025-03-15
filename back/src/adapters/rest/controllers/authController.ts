@@ -5,20 +5,28 @@ import dotenv from 'dotenv';
 dotenv.config(); 
 
 export const singin = async(req: Request, res: Response, userService: AuthService) => {
-  const {email, password } = req.body;
-  const user = await userService.getUser(email , password);
-  if(!user){
-
-    return res.status(404).json({
-      message: 'not exist user'
+  try {
+    
+    const {email, password } = req.body;
+    const user = await userService.getUser(email , password);
+    if(!user){
+      
+      return res.status(404).json({
+        message: 'not exist user'
+      })
+    }
+    const secretword = process.env.secretKeyToCrypto? process.env.secretKeyToCrypto:""
+    const token = encrypToken(user, secretword)
+    return res.json({
+      message:'success',
+      token
+    });
+  } catch (error) {
+    return res.status(501).json({
+      message: error
     })
+    
   }
-  const secretword = process.env.secretKeyToCrypto? process.env.secretKeyToCrypto:""
- const token = encrypToken(user, secretword)
- return res.json({
-  message:'success',
-  token
- });
 };
 
 function encrypToken(obj:any, secretword:string){
