@@ -10,8 +10,8 @@ export class UserRepository implements IUserRepository {
   private users: User[] = [];
 
   async getAllUsers(): Promise<User[]> {
-    const dataUsers = await sugarerpClientDB.select("*").from('user')
-    .where("user_id","<", 10)
+    const dataUsers = await sugarerpClientDB.select("*").from('users')
+    .where("id_user","<", 50)
     return dataUsers;
   }
 

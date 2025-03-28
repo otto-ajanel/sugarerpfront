@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 export const typeDefs = gql`
   type Query {
     users(id:Int): [User]
-    persons: [User]
+    modules: [Module]
     
   }
 
@@ -11,7 +11,15 @@ export const typeDefs = gql`
   }
 
   type User {
-    user_id: ID!
-    user_email: String!
+    id_user: ID!
+    email: String!
+    id_usertype: Int!
+  }
+
+  type Module{
+    id_module: ID!
+    module_name: String!
+    description: String!
   }
 `;
+ 

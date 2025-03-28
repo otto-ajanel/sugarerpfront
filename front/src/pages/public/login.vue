@@ -26,16 +26,23 @@
 <script  setup lang="ts">
 import {storeToRefs} from 'pinia'
 import { useToast } from "primevue/usetoast";
-import {ref} from 'vue' 
+import {ref, watch} from 'vue' 
 import {authStore} from '../../stores/auth'
 import imageLogin from '../../assets/imgs/homeImages/loginimages/undraw_design-components_529l.svg'
-
+import {useRouter}from 'vue-router'
 const toast = useToast()
-
+const router = useRouter()
 
 const email  =  ref("")
 const pass  =  ref("")
-const {login}= authStore()
+const {login}= authStore() 
+const {isAuth} = storeToRefs(authStore())
+
+watch(isAuth, async(newValue, oldValue)=>{
+if (newValue) {
+    router.push('/erp')
+}
+})
 
 </script>
 

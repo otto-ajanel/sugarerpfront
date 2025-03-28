@@ -9,17 +9,22 @@ export const authStore = defineStore('auth', ()=>{
     const isAuth =ref(false)
     
     async function login(email:String, password:String, toast:any){
-        
 
-        console.log(email)
-        const res = await axios.post<any>(`${apiUrl}/login`,{
-            email:email,
-            password:password
+        try {
 
-        })
-        console.log(res)
-        toast.add({ severity: 'error', summary: 'Ingrese las crendenciales', detail: 'El correo / la contraseña no es correcta', life: 3000 });
-
+            let res =await axios.post<any>(`${apiUrl}/login`,{
+                email:email,
+                password:password
+                
+            })
+            isAuth.value=true
+        } catch (error:any) {
+            
+            if (error.response && error.response.status ==404) {
+                toast.add({ severity: 'error', summary: 'Ingrese las crendenciales', detail: 'El correo / la contraseña no es correcta', life: 3000 });
+            } 
+            
+        }
     }
 
     return {
