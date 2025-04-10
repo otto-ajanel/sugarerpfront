@@ -51,6 +51,7 @@ const decryptToken = async (token: any, secretword: string): Promise<boolean> =>
   }
 };
 
+
 // Middleware para validación de token en Fastify
 export const validetoken = async (
   request: FastifyRequest,
