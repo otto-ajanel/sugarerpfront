@@ -1,13 +1,15 @@
-import { Router,request,response } from 'express';
-import authRouters from './authRouter'
-import {validetoken} from '../../controllers/authController'
+// routesV1.ts
+import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
+ // Asegúrate de que este también sea un plugin Fastify
+import { validetoken } from '../../controllers/authController';
 
-const routesV1 = Router()
+export default async function routesV1(fastify: FastifyInstance, opts: any) {
+  
+  fastify.addHook('preHandler', async (request: FastifyRequest, reply: FastifyReply) => {
+    await validetoken(request, reply);
+  });
 
-routesV1.use('/', authRouters)
-routesV1.use(validetoken)
-
-
-
-
-export default routesV1
+  fastify.get("/mod", async (request: FastifyRequest, reply: FastifyReply) => {
+    reply.status(200).send({ message: "hola mudno validado" });
+  });
+}

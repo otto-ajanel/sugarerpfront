@@ -1,15 +1,14 @@
-
-import {Router, Request, Response} from "express";
-import {singin} from '../../controllers/authController';
+import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
+import { singin } from '../../controllers/authController';
 
 import { AuthService } from '../../../../application/authServices';
 import { AuthRepository } from '../../../../domain/repositories/authRepository';
 
 const authRepository = new AuthRepository();
 const authService = new AuthService(authRepository);
-const routersAuth = Router()
 
-routersAuth.post('/login', (req, res) => singin(req, res, authService))
-
-export default routersAuth
-
+export default async function authRoutes(fastify: FastifyInstance, opts: any) {
+  fastify.post('/login', async (request: FastifyRequest, reply: FastifyReply) => {
+    return await singin(request, reply, authService);
+  });
+}

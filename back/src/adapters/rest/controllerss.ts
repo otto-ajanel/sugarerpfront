@@ -1,13 +1,25 @@
-import { Request, Response } from 'express';
+import { FastifyRequest, FastifyReply } from 'fastify';
 import { UserService } from '../../application/userServices';
 
-export const getUsers = async (req: Request, res: Response, userService: UserService) => {
+interface CreateUserBody {
+  name: string;
+}
+
+export const getUsers = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+  userService: UserService
+) => {
   const users = await userService.getUsers();
-  res.json(users);
+  return reply.send(users);
 };
 
-export const createUser = async (req: Request, res: Response, userService: UserService) => {
-  const { name } = req.body;
+export const createUser = async (
+  request: FastifyRequest<{ Body: CreateUserBody }>,
+  reply: FastifyReply,
+  userService: UserService
+) => {
+  const { name } = request.body;
   const newUser = await userService.createUser(name);
-  res.status(201).json(newUser);
+  return reply.code(201).send(newUser);
 };

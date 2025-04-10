@@ -1,65 +1,66 @@
-import { NextFunction, Request, Response } from 'express';
+import { FastifyRequest, FastifyReply } from 'fastify';
 import { AuthService } from '../../../application/authServices';
-import jwt  = require('jsonwebtoken')
+import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-dotenv.config(); 
+dotenv.config();
 
-export const singin = async(req: Request, res: Response, userService: AuthService) => {
+export const singin = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+  authService: AuthService
+) => {
   try {
+    // Se tipa el body para obtener email y password
+    const { email, password } = request.body as { email: string; password: string };
+    const user = await authService.getUser(email, password);
     
-    const {email, password } = req.body;
-    const user = await userService.getUser(email , password);
-    if(!user){
-      
-      return res.status(404).json({
+    if (!user) {
+      return reply.code(404).send({
         message: 'not exist user'
-      })
+      });
     }
-    const secretword = process.env.secretKeyToCrypto? process.env.secretKeyToCrypto:""
-    const token = encrypToken(user, secretword)
-    return res.json({
-      message:'success',
+    
+    const secretword = process.env.secretKeyToCrypto || "";
+    const token = encrypToken(user, secretword);
+    
+    return reply.send({
+      message: 'success',
       token
     });
   } catch (error) {
-    return res.status(501).json({
+    return reply.code(501).send({
       message: error
-    })
-    
+    });
   }
 };
 
-function encrypToken(obj:any, secretword:string){
-
-const token  = jwt.sign({data:obj, exp: Math.floor(Date.now() / 1000) + (60 * 60),
-}, secretword)
-return token
+function encrypToken(obj: any, secretword: string) {
+  const token = jwt.sign(
+    { data: obj, exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 7) },
+    secretword
+  );
+  return token;
 }
 
-const decryptToken = async(token:any, secretword:string )=>{
+const decryptToken = async (token: any, secretword: string): Promise<boolean> => {
   try {
-    jwt.verify(token,secretword)
-    return true
+    jwt.verify(token.toString(), secretword.toString());
+    return true;
   } catch (error) {
-    
-    return false
+    return false;
   }
-}
+};
 
-export const validetoken = async(req:Request,res:Response, next:NextFunction)=>{
-  const secretWord = process.env.secretKeyToCrypto? process.env.secretKeyToCrypto:""
-  const authHeader = req.headers['authorization']; // Obtenemos el valor de Authorization del header
-  if (!authHeader) {
-      return res.status(401).json({ message: 'No se proporcionó el token' });
-  }
+// Middleware para validación de token en Fastify
+export const validetoken = async (
+  request: FastifyRequest,
+  reply: FastifyReply
+) => {
+  const secretword = process.env.secretKeyToCrypto || "";
+  const authHeader = request.headers['authorization'];
   
-  const token = authHeader.split(' ')[1]; // Extraemos el token después de 'Bearer'
-  if (!token) {
-      return res.status(401).json({ message: 'Token no encontrado' });
+  if (!authHeader) {
+    return reply.code(401).send({ message: 'No se proporcionó el token'})
   }
-  if(await decryptToken(token,secretWord)){
-    next();
-    
-  }
-  return res.status(401).json({ message: 'Token no Valido' })
+  return decryptToken(authHeader.split(" ")[1],secretword)
 }
