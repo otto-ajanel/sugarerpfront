@@ -1,5 +1,5 @@
 <template>
-    <main class="flex flex-col sm:flex-row w-full bg-slate-900 text-white p-8 gap-8 justify-center">
+    <main class="flex flex-col sm:flex-row w-full bg-surface-950 text-white p-8 gap-8 justify-center">
         <section class="w-1/3 flex-col sm:w-1/3 flex sm:flex-col  justify-center items-center content-center">
             <Image
             :src="logo"

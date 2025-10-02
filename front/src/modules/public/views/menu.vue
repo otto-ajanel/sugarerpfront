@@ -1,24 +1,29 @@
 <template>
     <div class="fixed w-full z-50">
-        <MegaMenu :model="items">
+        <Toolbar :model="items" pt:root=" px-4">
             <template #start>
-                <img src="../../../assets/imgs/oaLogo.png" alt="logo" width="40">
+            <img src="../../../assets/imgs/oaLogo.png" alt="logo" width="30">
 
-            </template>
+            <Button label="modulos" type="button"  text icon="pi pi-th-large" />
+            <Button label="Home" text />
             
+            </template> 
             <template #end>
                 <Button as="a" icon="pi pi-user" variant="text" rounded aria-label="Filter" label="login" href="#login"/>
                 <Button as="a" icon="pi pi-github" severity="secondary" variant="text" rounded aria-label="Bookmark" href="https://github.com/otto-ajanel"/>
 
             </template>
 
-        </MegaMenu>
+        </Toolbar>
     </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
+import Toolbar from '@/volt/Toolbar.vue';
+import Button from '@/volt/Button.vue';
 
+ 
 function menuitem(){
     const homeSection = document.getElementById("home");
 

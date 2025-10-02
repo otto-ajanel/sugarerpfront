@@ -1,71 +1,42 @@
-import { createApp, h, provide } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from "vue";
+import "./style.css";
+import App from "./App.vue";
+import PrimeVue from "primevue/config";
+import StyleClass from "primevue/styleclass";
+import ToastService from 'primevue/toastservice';
+import Tooltip from 'primevue/tooltip';
+import Ripple from 'primevue/ripple';
+import FileUpload from 'primevue/fileupload';
+import Checkbox from "primevue/checkbox";
+import InputText from 'primevue/inputtext';
+import IconField from 'primevue/iconfield'; 
+import InputIcon from 'primevue/inputicon'; 
+import FloatLabel from 'primevue/floatlabel';
+import Textarea from 'primevue/textarea';
+import aura from '../src/assets/presets/aura'
 
-import './style.css'
-import router from './routes/index.ts'
-import App from './App.vue'
-//import './assets/flag.css'
-import PrimeVue from 'primevue/config';
-import ConfirmationService from 'primevue/confirmationservice'
-import ToastService from 'primevue/toastservice'
-import  DialogService  from 'primevue/dialogservice'
-import sugarApiGraphql from './graphql/sugarAPIGraphql.ts'
-import {
-    Tooltip,
-    BadgeDirective,
-    FocusTrap,
-    AnimateOnScroll
-    , Button
-    , Image
-    , IconField
-    , InputText
-    , InputIcon
-    , FloatLabel
-    , MegaMenu
-    , Toast
-} from 'primevue'
-// @ts-ignore
-import Aura  from './assets/presets/aura';
-// @ts-ignore
-import Noir from './assets/presets/Noir'
-import 'primeicons/primeicons.css'
-import { DefaultApolloClient } from '@vue/apollo-composable'
 
-const app = createApp({
-    setup(){
-        provide(DefaultApolloClient,sugarApiGraphql)
-    },
-    render: ()=> h(App)});
+import router from "./routes";
+import {createPinia} from 'pinia'
 
-app.use(PrimeVue, {
-//unstyled:true,
-ripple:true,
-//pt:Aura
-theme:{
-    preset:Noir
-    }
-});
-const pinia  = createPinia()
+const pinia = createPinia()
+
+const app = createApp(App);
+app.use(PrimeVue, { unstyled: true,
+    pt:aura
+ });
 app.use(pinia)
 app.use(router)
-
-app.use(ConfirmationService);
-app.use(ToastService);
-app.use(DialogService);
-
-app.component("Button", Button)
-app.component("Image", Image)
-app.component("IconField",IconField)
-app.component("InputText", InputText)
-app.component("InputIcon",InputIcon)
-app.component("FloatLabel",FloatLabel)
-app.component("MegaMenu",MegaMenu)
-app.component("Toast",Toast)
-
+app.use(ToastService)
+app.component('FileUpload', FileUpload);
+app.component('Checkbox', Checkbox);
+app.component('InputText', InputText);
+app.component('IconField', IconField);
+app.component('InputIcon', InputIcon);
+app.component('FloatLabel', FloatLabel);
+app.component('Textarea', Textarea);   
+app.directive("styleclass", StyleClass);
 app.directive('tooltip', Tooltip);
-app.directive('badge', BadgeDirective);
-app.directive('focustrap', FocusTrap);
-app.directive('animateonscroll', AnimateOnScroll);
+app.directive('ripple', Ripple);
 
-
-app.mount('#app')
+app.mount("#app");
