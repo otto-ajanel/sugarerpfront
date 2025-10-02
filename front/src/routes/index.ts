@@ -2,7 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import { authStore } from "../stores/auth";
 import { storeToRefs } from "pinia";
 const routes = [
-     {
+      {
         path:'/',
         component: ()=>import('../layouts/public.vue')
     }, 
@@ -11,12 +11,27 @@ const routes = [
     component: ()=>import('../layouts/sugarErp.vue'),
     children: [
         {
-            path:'customer',
-            component: ()=>import('../layouts/customer.vue'),
-            name:'customer'
+            path:'users',
+            component: ()=>import('../modules/private/users/views/indexView.vue'),
+            name:'users'
+        },
+        {
+            path:'permissions',
+            component: ()=>import('../modules/private/users/views/permisssions.vue'),
+            name:'permissions'
+        },
+       /*  {
+            path:'autorizations',
+            component: ()=>import('../modules/private/products/Views/indexView.vue'),
+            name:'autorizations'
+        }, */
+        {
+            path:'products',
+            component: ()=>import('../modules/private/inventory/views/product.vue'),
+            name:'products'
         }
     ]
-    
+
     }
 
 ]
