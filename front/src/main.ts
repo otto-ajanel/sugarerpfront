@@ -13,21 +13,38 @@ import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon'; 
 import FloatLabel from 'primevue/floatlabel';
 import Textarea from 'primevue/textarea';
-import aura from '../src/assets/presets/aura'
+import Button from 'primevue/button';
+import MultiSelect from 'primevue/multiselect';
+import Avatar from "primevue/avatar";
+import Badge from "primevue/badge";
+import Tabs from "primevue/tabs";
+import TabList from "primevue/tablist";
+import TabPanel from "primevue/tabpanel";
+import Tab from "primevue/tab";
+import TabPanels from "primevue/tabpanels";
+import RadioButton from "primevue/radiobutton";
+import InputNumber from "primevue/inputnumber";
+import Aura from './assets/presets/Noir.js'
+import { definePreset } from '@primeuix/themes';
+
 
 
 import router from "./routes";
 import {createPinia} from 'pinia'
 
+
 const pinia = createPinia()
 
 const app = createApp(App);
-app.use(PrimeVue, { unstyled: true,
-    pt:aura
+app.use(PrimeVue, { theme:{
+    preset:Aura,
+}
+
  });
 app.use(pinia)
 app.use(router)
 app.use(ToastService)
+
 app.component('FileUpload', FileUpload);
 app.component('Checkbox', Checkbox);
 app.component('InputText', InputText);
@@ -35,6 +52,19 @@ app.component('IconField', IconField);
 app.component('InputIcon', InputIcon);
 app.component('FloatLabel', FloatLabel);
 app.component('Textarea', Textarea);   
+app.component('Button', Button);
+app.component('MultiSelect', MultiSelect);
+app.component('Avatar', Avatar);
+app.component('Badge', Badge);
+app.component('Tabs', Tabs);
+app.component('TabList', TabList);
+app.component('Tab', Tab);
+app.component('TabPanels', TabPanels);
+app.component('TabPanel', TabPanel);
+app.component('RadioButton', RadioButton);
+app.component('InputNumber', InputNumber);
+
+
 app.directive("styleclass", StyleClass);
 app.directive('tooltip', Tooltip);
 app.directive('ripple', Ripple);

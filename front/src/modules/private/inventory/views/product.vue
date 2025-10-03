@@ -1,50 +1,22 @@
 <template>
   <div>
     <form @submit.prevent="saveProduct" class="space-y-4">
-      <div class="card flex flex-wrap justify-center gap-4">
-        <div class="relative">
-          <label class="block text-sm font-medium mb-1">Nombre producto</label>
+      <div class="card flex flex-wrap gap-4">
+        <div class="relative w-124">
+          <label class="block text-sm font-medium mb-1">Producto</label>
 
           <IconField>
-            <InputIcon class="pi pi-user" />
-            <InputText v-model="value1" placeholder="user" />
+            <InputIcon class="pi pi-box" />
+            <InputText
+              v-model="value1"
+              placeholder="Eje. Nintendo Wii"
+              size="large"
+              fluid
+            />
           </IconField>
         </div>
-        <div class="card flex flex-col justify-center items-end gap-4">
-          <br/>
-        <FloatLabel >
-          <Textarea
-            id="over_label"
-            v-model="value1"
-            rows="5"
-            cols="35"
-            style="resize: none"
-          />
-          <label for="over_label">Over Label</label>
-        </FloatLabel>
-        </div>
 
-        <div>
-          <div class="flex flex-col w-full">
-            <Avatar
-              @click="upload"
-              size="xlarge"
-              icon="pi pi-image"
-              class="w-10 h-10 border-2 text-2xl border-surface-300 dark:border-surface-700 img-upload"
-            />
-
-            <div class="card flex flex-wrap gap-6 items-center justify-between">
-              <InputText
-                type="file"
-                ref="inputFile"
-                icon="pi pi-image"
-                style="display: none"
-                label="Subir imagen"
-                >Subir
-              </InputText>
-            </div>
-          </div>
-        </div>
+        <div class="card flex flex-col gap-4"></div>
       </div>
 
       <div class="card flex flex-wrap justify-center gap-4">
@@ -101,55 +73,142 @@
             <span class="font-bold whitespace-nowrap">Precio en venta</span>
             <Badge value="2" />
           </Tab>
+          <Tab value="3" class="flex items-center gap-2">
+            <Avatar icon="pi pi-wallet" class="mr-2" />
+            <span class="font-bold whitespace-nowrap">Imagenes</span>
+            <Badge value="2" />
+          </Tab>
         </TabList>
         <TabPanels>
           <TabPanel value="0">
-            <div class="flex flex-col justify-center items-center">
-              <label> Tipo de producto </label>
-              <div class="card flex justify-center">
-                <div class="flex flex-wrap gap-4">
-                  <div class="flex items-center gap-2">
-                    <RadioButton
-                      v-model="ingredient"
-                      inputId="ingredient1"
-                      name="pizza"
-                      value="Cheese"
-                    />
-                    <label for="ingredient1">Bienes</label>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <RadioButton
-                      v-model="ingredient"
-                      inputId="ingredient2"
-                      name="pizza"
-                      value="Mushroom"
-                    />
-                    <label for="ingredient2">Servicios</label>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <RadioButton
-                      v-model="ingredient"
-                      inputId="ingredient3"
-                      name="pizza"
-                      value="Pepper"
-                    />
-                    <label for="ingredient3">Combinación+</label>
+            <div class="flex flex">
+              <div class="flex flex-col justyfy-center align-center gap-4">
+                <div class="card flex justify-center">
+                  <label class=""> Tipo de producto: </label>
+                  <div class="flex flex-wrap gap-4">
+                    <div class="flex items-center gap-2">
+                      <RadioButton
+                        v-model="ingredient"
+                        inputId="ingredient1"
+                        name="pizza"
+                        value="Cheese"
+                      />
+                      <label for="ingredient1">Bienes</label>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <RadioButton
+                        v-model="ingredient"
+                        inputId="ingredient2"
+                        name="pizza"
+                        value="Mushroom"
+                      />
+                      <label for="ingredient2">Servicios</label>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <RadioButton
+                        v-model="ingredient"
+                        inputId="ingredient3"
+                        name="pizza"
+                        value="Pepper"
+                      />
+                      <label for="ingredient3">Combinación</label>
+                    </div>
                   </div>
                 </div>
+                <div>
+                  <label for="" class="text-primary"
+                    >Politicas de facturación:</label
+                  >
+                  <MultiSelect
+                    name="city"
+                    :options="[
+                      { name: 'New York', code: 'NY' },
+                      { name: 'Rome', code: 'RM' },
+                      { name: 'London', code: 'LDN' },
+                      { name: 'Istanbul', code: 'IST' },
+                      { name: 'Paris', code: 'PRS' }
+                    ]"
+                    optionLabel="name"
+                    filter
+                    placeholder="Select Cities"
+                    :maxSelectedLabels="3"
+                    class="w-full md:w-80"
+                  />
+                </div>
+                <div class="flex">
+                  <label for="">Rastraer inventario:</label>
+                  <Checkbox
+                    v-model="pizza"
+                    inputId="ingredient2"
+                    name="pizza"
+                    value="Punto de venta"
+                  />
+                </div>
               </div>
-            </div>
-            <div>
-              <FileUpload
-                name="demo[]"
-                url="/api/upload"
-                :multiple="false"
-                accept="image/*"
-                :maxFileSize="1000000"
-              >
-                <template #empty>
-                  <span>Drag and drop files to here to upload.</span>
-                </template>
-              </FileUpload>
+              <div class="flex flex-col">
+                <div class="flex">
+                  <label for="">Precio de venta</label>
+                  <InputNumber
+                    v-model="value1"
+                    mode="currency"
+                    currency="USD"
+                    locale="en-US"
+                    class="w-24rem"
+                  />
+                </div>
+                <div class="flex">
+                  <label for="">Inpuesto de venta</label>
+                  <InputNumber
+                    v-model="value1"
+                    mode="currency"
+                    currency="USD"
+                    locale="en-US"
+                    class="w-24rem"
+                  />
+                </div>
+                <div class="flex">
+                  <label for="">Impuesto de ventas</label>
+                  <InputNumber
+                    v-model="value1"
+                    mode="currency"
+                    currency="USD"
+                    locale="en-US"
+                    class="w-24rem"
+                  />
+                </div>
+                <div class="flex">
+                  <label for="">coste</label>
+                  <InputNumber
+                    v-model="value1"
+                    mode="currency"
+                    currency="USD"
+                    locale="en-US"
+                    class="w-24rem"
+                  />
+                </div>
+                <div class="flex">
+                  <label for="">Inpuesto de compra</label>
+                  <InputNumber
+                    v-model="value1"
+                    mode="currency"
+                    currency="USD"
+                    locale="en-US"
+                    class="w-24rem"
+                  />
+                </div>
+                <div class="flex">
+                  <label for="">Categoria</label>
+                  <MultiSelect
+                    v-model="value1"
+                    :options="[]"
+                    optionLabel="name"
+                    optionValue="id"
+                    placeholder="Seleccione una categoría"
+                    class="w-24rem" />
+                </div>
+
+
+              </div>
             </div>
           </TabPanel>
           <TabPanel value="1">
@@ -163,7 +222,7 @@
               velit, sed quia non numquam eius modi.
             </p>
           </TabPanel>
-          <TabPanel value="2">
+          <TabPanel value="2" as="p" class="m-0">
             <p>
               At vero eos et accusamus et iusto odio dignissimos ducimus qui
               blanditiis praesentium voluptatum deleniti atque corrupti quos
@@ -174,33 +233,33 @@
               nobis est eligendi optio cumque nihil impedit quo minus.
             </p>
           </TabPanel>
+          <TabPanel value="3">
+            <FileUpload
+              name="demo[]"
+              url="/api/upload"
+              :multiple="true"
+              accept="image/*"
+              :maxFileSize="1000000"
+            >
+              <template #empty>
+                <span>Drag and drop files to here to upload.</span>
+              </template>
+            </FileUpload>
+          </TabPanel>
         </TabPanels>
       </Tabs>
 
-      <Button
-        label="Limpiar"
-        severity="secondary"
-        @click="showDialog = false"
-      />
-
-      <Button class="ml-8" label="Guardar" type="submit" />
+      <Button label="Limpiar" severity="" @click="showDialog = false" />
     </form>
+    
+    
   </div>
 </template>
 
 <script lang="ts" setup>
-import Avatar from "@/volt/Avatar.vue";
-import Badge from "@/volt/Badge.vue";
-import Tabs from "@/volt/Tabs.vue";
-import TabList from "@/volt/TabList.vue";
-import Tab from "@/volt/Tab.vue";
-import TabPanels from "@/volt/TabPanels.vue";
-import TabPanel from "@/volt/TabPanel.vue";
-import { ref } from "vue";
-import Button from "@/volt/Button.vue";
-import Dialog from "@/volt/dialog.vue";
 
-import Select from "@/volt/Select.vue";
+import { ref } from "vue";
+const value1 = ref("");
 
 const pizza = ref(null);
 
@@ -208,7 +267,6 @@ interface Category {
   id: number;
   name: string;
 }
-import RadioButton from "@/volt/RadioButton.vue";
 
 const ingredient = ref(null);
 
