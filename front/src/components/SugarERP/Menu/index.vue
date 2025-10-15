@@ -9,7 +9,7 @@
     <!-- Navbar principal -->
     <header
       :class="[
-        'border-b transition-colors duration-300 sticky top-0 z-40',
+        'border-b transition-colors duration-300 fixed w-full top-0 z-40',
         darkMode
           ? 'bg-gray-800 border-gray-700 shadow-sm'
           : 'bg-white border-gray-200 shadow-sm',

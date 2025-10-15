@@ -2,7 +2,10 @@
     <MenuSugarERP/>
     <SideBar/>
     <div class="content-main">
-      <RouterView class="ml-24 z-40"/>
+      <RouterView 
+          v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 slide-in-from-l-8 animate-duration-1000', leaveClass: 'animate-leave fade-out-0' }"
+      
+      class="ml-24 z-30 mt-16"/>
     </div>
 </template>
 <script setup lang="ts">

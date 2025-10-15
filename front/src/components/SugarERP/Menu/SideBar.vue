@@ -45,7 +45,7 @@
                       :class="{ 'border-b-2 border-primary dark:bg-blue-500': isMenuActive(submenu) }"
                       @click="selectMenuItem(submenu)"
                     >
-                      <i :class="[ 'pi '+ submenu.icon_menu, 'mr-2']" @click="uiStoreState.navigatePath(submenu.path_menu)"></i>
+                      <li :class="[ 'pi '+ submenu.icon_menu, 'mr-2']" @click="uiStoreState.navigatePath(submenu.path_menu)"></li>
                       <span @click="uiStoreState.navigatePath(submenu.path_menu)">{{ submenu.menu_name }}</span>
                     </div>
                   </li>
@@ -61,13 +61,13 @@
           >
             <li v-for="submenu in menu.submenus" :key="submenu.id_menu">
               <div
-                class="flex items-center p-2 rounded-lg cursor-pointer hover:bg-primary hover:text-white hover:bg-gray-600 dark:hover:bg-gray-600"
-                :class="{ 'border-b-2 border-primary dark:bg-blue-500': isMenuActive(submenu) }"
+                class="flex items-center p-1 cursor-pointer hover:bg-gray-50  dark:hover:bg-gray-600"
+                :class="{ 'border-b-1 p-0 border-primary-700 dark:bg-blue-500': isMenuActive(submenu) }"
                 @click="selectMenuItem(submenu)"
               >
-                <i 
+                <li
                 @click="uiStoreState.navigatePath(submenu.path_menu)"
-                :class="['pi '+submenu.icon_menu, 'mr-2']"></i>
+                :class="['pi '+submenu.icon_menu, 'mr-2']"></li>
                 <span
                 @click="uiStoreState.navigatePath(submenu.path_menu)"
                 >{{ submenu.menu_name }}</span>

@@ -8,7 +8,7 @@
           <IconField>
             <InputIcon class="pi pi-box" />
             <InputText
-              v-model="value1"
+              v-model="formProduct.nameProduct"
               placeholder="Eje. Nintendo Wii"
               size="large"
               fluid
@@ -22,37 +22,29 @@
       <div class="card flex flex-wrap justify-center gap-4">
         <div class="flex items-center gap-2">
           <Checkbox
-            v-model="pizza"
-            inputId="ingredient1"
-            name="pizza"
-            value="venta"
+            v-model="formProduct.enableFor.sale"
+            inputId="sale"
+            binary
           />
-          <label for="ingredient1"> Venta </label>
+          <label for="sale"> Venta </label>
         </div>
         <div class="flex items-center gap-2">
-          <Checkbox
-            v-model="pizza"
-            inputId="ingredient2"
-            name="pizza"
-            value="Punto de venta"
-          />
+          <Checkbox v-model="formProduct.enableFor.pos" inputId="pos" binary />
           <label for="ingredient2"> Punto de venta </label>
         </div>
         <div class="flex items-center gap-2">
           <Checkbox
-            v-model="pizza"
+            v-model="formProduct.enableFor.purchase"
             inputId="ingredient3"
-            name="pizza"
-            value="Compras"
+            binary
           />
           <label for="ingredient3"> Compras </label>
         </div>
         <div class="flex items-center gap-2">
           <Checkbox
-            v-model="pizza"
+            v-model="formProduct.enableFor.others"
             inputId="ingredient4"
-            name="pizza"
-            value="Onion"
+            binary
           />
           <label for="ingredient4"> Otros... </label>
         </div>
@@ -81,12 +73,12 @@
         </TabList>
         <TabPanels>
           <TabPanel value="0">
-            <div class="flex flex">
+            <div class="flex flex w-full justify-evenly gap-8">
               <div class="flex flex-col justyfy-center align-center gap-4">
-                <div class="card flex justify-center">
+                <div class="card flex w-full justify-between">
                   <label class=""> Tipo de producto: </label>
                   <div class="flex flex-wrap gap-4">
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2 ml-4">
                       <RadioButton
                         v-model="ingredient"
                         inputId="ingredient1"
@@ -115,7 +107,7 @@
                     </div>
                   </div>
                 </div>
-                <div>
+                <div class="flex w-full justify-between align-center">
                   <label for="" class="text-primary"
                     >Politicas de facturación:</label
                   >
@@ -126,27 +118,41 @@
                       { name: 'Rome', code: 'RM' },
                       { name: 'London', code: 'LDN' },
                       { name: 'Istanbul', code: 'IST' },
-                      { name: 'Paris', code: 'PRS' }
+                      { name: 'Paris', code: 'PRS' },
                     ]"
                     optionLabel="name"
                     filter
                     placeholder="Select Cities"
                     :maxSelectedLabels="3"
-                    class="w-full md:w-80"
+                    class="w-1/2"
                   />
                 </div>
-                <div class="flex">
-                  <label for="">Rastraer inventario:</label>
+                <div class="flex w-full justify-between align-center">
+                  <label for="">Rastrar inventario:</label>
                   <Checkbox
+                    class="w-1/2"
                     v-model="pizza"
                     inputId="ingredient2"
                     name="pizza"
                     value="Punto de venta"
                   />
                 </div>
-              </div>
-              <div class="flex flex-col">
+                <div class="flex w-full justify-between">
+                  <label for="">Codigo de barra</label>
+                  <InputText
+                    v-model="value1"
+                    mode="currency"
+                    currency="USD"
+                    locale="en-US"
+                    class="w-24rem"
+                  />
+                </div>
                 <div class="flex">
+                  <label for=""> Imagen de codigo de barra </label>
+                </div>
+              </div>
+              <div class="flex flex-col gap-4">
+                <div class="flex w-full justify-between">
                   <label for="">Precio de venta</label>
                   <InputNumber
                     v-model="value1"
@@ -156,7 +162,7 @@
                     class="w-24rem"
                   />
                 </div>
-                <div class="flex">
+                <div class="flex w-full justify-between">
                   <label for="">Inpuesto de venta</label>
                   <InputNumber
                     v-model="value1"
@@ -166,7 +172,7 @@
                     class="w-24rem"
                   />
                 </div>
-                <div class="flex">
+                <div class="flex w-full justify-between">
                   <label for="">Impuesto de ventas</label>
                   <InputNumber
                     v-model="value1"
@@ -176,7 +182,7 @@
                     class="w-24rem"
                   />
                 </div>
-                <div class="flex">
+                <div class="flex w-full justify-between">
                   <label for="">coste</label>
                   <InputNumber
                     v-model="value1"
@@ -186,7 +192,7 @@
                     class="w-24rem"
                   />
                 </div>
-                <div class="flex">
+                <div class="flex w-full justify-between">
                   <label for="">Inpuesto de compra</label>
                   <InputNumber
                     v-model="value1"
@@ -196,18 +202,61 @@
                     class="w-24rem"
                   />
                 </div>
-                <div class="flex">
+                <div class="flex w-full justify-between">
                   <label for="">Categoria</label>
-                  <MultiSelect
-                    v-model="value1"
-                    :options="[]"
+                  <Select
+                    v-model="formProduct.categoryId"
+                    :options="categories"
                     optionLabel="name"
-                    optionValue="id"
-                    placeholder="Seleccione una categoría"
-                    class="w-24rem" />
+                    placeholder="Select a Country"
+                    class="w-full md:w-56"
+                  >
+                    <template #value="slotProps">
+                      <div v-if="slotProps.value" class="flex items-center">
+                        <img
+                          :alt="slotProps.value.label"
+                          src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
+                          :class="`mr-2 flag flag-${slotProps.value.code.toString().toLowerCase()}`"
+                          style="width: 18px"
+                        />
+                        <div>{{ slotProps.value.name }}</div>
+                      </div>
+                      <span v-else>
+                        {{ slotProps.placeholder }}
+                      </span>
+                    </template>
+                    <template #option="slotProps">
+                      <div class="flex items-center">
+                        <img
+                          :alt="slotProps.option.label"
+                          src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
+                          :class="`mr-2 flag flag-${slotProps.option.code.toString().toLowerCase()}`"
+                          style="width: 18px"
+                        />
+                        <div>{{ slotProps.option.name }}</div>
+                      </div>
+                    </template>
+                    <template #dropdownicon>
+                      <i class="pi pi-map" />
+                    </template>
+                    <template #header>
+                      <div class="font-medium p-3">Available Countries</div>
+                    </template>
+                    <template #footer>
+                      <div class="p-3">
+                        <Button
+                        @click="activemodal()"
+                          label="Add New"
+                          fluid
+                          severity="secondary"
+                          variant="text"
+                          size="small"
+                          icon="pi pi-plus"
+                        />
+                      </div>
+                    </template>
+                  </Select>
                 </div>
-
-
               </div>
             </div>
           </TabPanel>
@@ -249,36 +298,57 @@
         </TabPanels>
       </Tabs>
 
-      <Button label="Limpiar" severity="" @click="showDialog = false" />
+      <Button label="Guardar" severity="" @click="showDialog = false" />
     </form>
-    
-    
+    <Category/>
+    <Toast />
+
   </div>
 </template>
 
 <script lang="ts" setup>
-
 import { ref } from "vue";
-const value1 = ref("");
+import { useProduct } from "../../../../composables/modules/product/productComposable";
+import useCategory from "../../../../composables/modules/product/categoryComposable";
+import { uiStore } from "../../../../stores/uiStore";
+
+const { formProduct } = useProduct();
+import Category from "./Category.vue";
+
+const { categories, getAllCategories } = useCategory();
+const { fnShowModalCategory } = uiStore();
+getAllCategories();
+
+function activemodal(){
+  
+  fnShowModalCategory(true)
+  
+}
+
 
 const pizza = ref(null);
 
-interface Category {
-  id: number;
-  name: string;
-}
+const value1 = ref(null);
+
 
 const ingredient = ref(null);
 
 interface Product {
   name: string;
   code: string;
-  category: Category | null;
+  category:  null;
   price: number | null;
   stock: number | null;
 }
+const tost = useToast();
+ function showCreateCategory(){
+  
+  tost.add({severity:'info', summary: 'Info', detail:'You have clicked the button', life: 3000});  
+};
 
 import { useToast } from "primevue/usetoast";
+import InputText from "primevue/inputtext";
+import Toast from "primevue/toast";
 const toast = useToast();
 const inputFile = ref(null);
 
@@ -304,11 +374,7 @@ const onUpload = () => {
 
 const showDialog = ref(false);
 
-const categories = ref<Category[]>([
-  { id: 1, name: "Electrónica" },
-  { id: 2, name: "Ropa" },
-  { id: 3, name: "Alimentos" },
-]);
+
 
 const product = ref<Product>({
   name: "",

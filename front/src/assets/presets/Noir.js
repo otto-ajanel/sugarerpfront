@@ -27,8 +27,8 @@ const Noir = definePreset(Aura, {
                 highlight: {
                 background: '{sky.950}',
                 focusBackground: '{sky.700}',
-                color: '#ffffff',
-                focusColor: '#ffffff'
+                color: '#f2efefff',
+                focusColor: '#f2efefff'
                 },
             },
             dark: {

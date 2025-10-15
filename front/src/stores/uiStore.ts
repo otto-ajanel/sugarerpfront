@@ -11,6 +11,7 @@ export const uiStore = defineStore('uiStore', () => {
     const showModule = ref(false)
     const modules = ref()
     const moduleSelected = ref()
+    const showModalCategory = ref(false)
 
     async function getModulesAndMenus() {
         const { data } = await getData('permissionsbyuser')
@@ -98,6 +99,10 @@ export const uiStore = defineStore('uiStore', () => {
         navigateRouter.push(path)
     }
 
+    function fnShowModalCategory(value: boolean) {
+        showModalCategory.value = value
+    }
+
     return {
         darkMode,
         changeMode,
@@ -107,7 +112,8 @@ export const uiStore = defineStore('uiStore', () => {
         showModule,
         filterMenu,
         moduleSelected,
-        navigatePath
+        navigatePath,
+        showModalCategory,
+        fnShowModalCategory
     }
-
 })

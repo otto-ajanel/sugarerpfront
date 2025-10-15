@@ -4,6 +4,7 @@ import App from "./App.vue";
 import PrimeVue from "primevue/config";
 import StyleClass from "primevue/styleclass";
 import ToastService from 'primevue/toastservice';
+import Select from "primevue/select";
 import Tooltip from 'primevue/tooltip';
 import Ripple from 'primevue/ripple';
 import FileUpload from 'primevue/fileupload';
@@ -24,9 +25,10 @@ import Tab from "primevue/tab";
 import TabPanels from "primevue/tabpanels";
 import RadioButton from "primevue/radiobutton";
 import InputNumber from "primevue/inputnumber";
-import Aura from './assets/presets/Noir.js'
-import { definePreset } from '@primeuix/themes';
+import Dialog from "primevue/dialog";
 
+import Aura from './assets/presets/Noir.js'
+import AnimateOnScroll from 'primevue/animateonscroll';
 
 
 import router from "./routes";
@@ -38,7 +40,8 @@ const pinia = createPinia()
 const app = createApp(App);
 app.use(PrimeVue, { theme:{
     preset:Aura,
-}
+},
+ripple: true
 
  });
 app.use(pinia)
@@ -63,7 +66,9 @@ app.component('TabPanels', TabPanels);
 app.component('TabPanel', TabPanel);
 app.component('RadioButton', RadioButton);
 app.component('InputNumber', InputNumber);
-
+app.component('Select', Select);
+app.component('Dialog', Dialog);
+app.directive('animateonscroll', AnimateOnScroll);
 
 app.directive("styleclass", StyleClass);
 app.directive('tooltip', Tooltip);

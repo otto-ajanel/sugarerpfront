@@ -27,7 +27,7 @@ const routes = [
         }, */
         {
             path:'products',
-            component: ()=>import('../modules/private/inventory/views/product.vue'),
+            component: ()=>import('../modules/private/inventory/views/Product.vue'),
             name:'products'
         }
     ]
