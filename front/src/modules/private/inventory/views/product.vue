@@ -80,30 +80,27 @@
                   <div class="flex flex-wrap gap-4">
                     <div class="flex items-center gap-2 ml-4">
                       <RadioButton
-                        v-model="ingredient"
+                        v-model="formProduct.typeproduct"
                         inputId="ingredient1"
-                        name="pizza"
-                        value="Cheese"
+                        value="goods"
                       />
                       <label for="ingredient1">Bienes</label>
                     </div>
                     <div class="flex items-center gap-2">
                       <RadioButton
-                        v-model="ingredient"
+                        v-model="formProduct.typeproduct"
                         inputId="ingredient2"
-                        name="pizza"
-                        value="Mushroom"
+                        value="service"
                       />
                       <label for="ingredient2">Servicios</label>
                     </div>
                     <div class="flex items-center gap-2">
                       <RadioButton
-                        v-model="ingredient"
+                        v-model="formProduct.typeproduct"
                         inputId="ingredient3"
-                        name="pizza"
-                        value="Pepper"
+                        value="combo"
                       />
-                      <label for="ingredient3">Combinación</label>
+                      <label for="ingredient3">Combos</label>
                     </div>
                   </div>
                 </div>
@@ -114,15 +111,13 @@
                   <MultiSelect
                     name="city"
                     :options="[
-                      { name: 'New York', code: 'NY' },
-                      { name: 'Rome', code: 'RM' },
-                      { name: 'London', code: 'LDN' },
-                      { name: 'Istanbul', code: 'IST' },
-                      { name: 'Paris', code: 'PRS' },
+                      { name: 'Factura Electrónica', code: 'FE' },
+                      { name: 'Nota de Crédito', code: 'NC' },
+
                     ]"
                     optionLabel="name"
                     filter
-                    placeholder="Select Cities"
+                    placeholder="Select politica facturación"
                     :maxSelectedLabels="3"
                     class="w-1/2"
                   />
@@ -131,74 +126,62 @@
                   <label for="">Rastrar inventario:</label>
                   <Checkbox
                     class="w-1/2"
-                    v-model="pizza"
+                    v-model="formProduct.trackInventory"
                     inputId="ingredient2"
-                    name="pizza"
-                    value="Punto de venta"
+                    binary
                   />
                 </div>
                 <div class="flex w-full justify-between">
-                  <label for="">Codigo de barra</label>
+                  <label for="">Codigo de barra/ QR</label>
                   <InputText
-                    v-model="value1"
-                    mode="currency"
-                    currency="USD"
-                    locale="en-US"
+                    v-model="formProduct.barcode"
                     class="w-24rem"
                   />
                 </div>
-                <div class="flex">
-                  <label for=""> Imagen de codigo de barra </label>
+                <div class="flex w-full justify-between">
+                  <label for=""> Imagen de codigo de barra / QR </label>
+                  <img v-if="qrcode" :src="qrcode" alt="QR Code" />
                 </div>
               </div>
               <div class="flex flex-col gap-4">
                 <div class="flex w-full justify-between">
                   <label for="">Precio de venta</label>
                   <InputNumber
-                    v-model="value1"
+                    v-model="formProduct.salePrice"
                     mode="currency"
-                    currency="USD"
-                    locale="en-US"
+                    currency="GTQ"
+                    locale="en-GT"
                     class="w-24rem"
                   />
                 </div>
-                <div class="flex w-full justify-between">
-                  <label for="">Inpuesto de venta</label>
-                  <InputNumber
-                    v-model="value1"
-                    mode="currency"
-                    currency="USD"
-                    locale="en-US"
-                    class="w-24rem"
-                  />
-                </div>
+              
                 <div class="flex w-full justify-between">
                   <label for="">Impuesto de ventas</label>
                   <InputNumber
-                    v-model="value1"
+                    v-model="formProduct.taxsale"
                     mode="currency"
-                    currency="USD"
-                    locale="en-US"
+                    currency="GTQ"
+                    locale="en-GT"  
                     class="w-24rem"
                   />
                 </div>
                 <div class="flex w-full justify-between">
-                  <label for="">coste</label>
+                  <label for="">Costo</label>
                   <InputNumber
-                    v-model="value1"
+                    v-model="formProduct.costPrice"
                     mode="currency"
-                    currency="USD"
-                    locale="en-US"
+                    currency="GTQ"
+                    locale="en-GT"  
                     class="w-24rem"
                   />
                 </div>
                 <div class="flex w-full justify-between">
-                  <label for="">Inpuesto de compra</label>
+                  <label for="">Impuesto de compra </label>
                   <InputNumber
-                    v-model="value1"
+                    v-model="formProduct.taxpurchase"
                     mode="currency"
-                    currency="USD"
-                    locale="en-US"
+                    currency="GTQ"
+                    locale="en-GT"  
                     class="w-24rem"
                   />
                 </div>
@@ -208,7 +191,7 @@
                     v-model="formProduct.categoryId"
                     :options="categories"
                     optionLabel="name"
-                    placeholder="Select a Country"
+                    placeholder="Select a Category"
                     class="w-full md:w-56"
                   >
                     <template #value="slotProps">
@@ -261,15 +244,7 @@
             </div>
           </TabPanel>
           <TabPanel value="1">
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-              accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-              quae ab illo inventore veritatis et quasi architecto beatae vitae
-              dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
-              aspernatur aut odit aut fugit, sed quia consequuntur magni dolores
-              eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci
-              velit, sed quia non numquam eius modi.
-            </p>
+            <AtributeVariant/>
           </TabPanel>
           <TabPanel value="2" as="p" class="m-0">
             <p>
@@ -307,13 +282,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, watch, defineAsyncComponent } from "vue";
 import { useProduct } from "../../../../composables/modules/product/productComposable";
 import useCategory from "../../../../composables/modules/product/categoryComposable";
 import { uiStore } from "../../../../stores/uiStore";
+import { useToast } from "primevue/usetoast";
+import Category from "./Category.vue";
+const AtributeVariant = defineAsyncComponent(() => import('./AtributeVariant.vue'));
 
 const { formProduct } = useProduct();
-import Category from "./Category.vue";
 
 const { categories, getAllCategories } = useCategory();
 const { fnShowModalCategory } = uiStore();
@@ -325,69 +302,18 @@ function activemodal(){
   
 }
 
+const barcodeText = ref(formProduct.barcode);
+const qrcode = ref('');
 
-const pizza = ref(null);
-
-const value1 = ref(null);
-
-
-const ingredient = ref(null);
-
-interface Product {
-  name: string;
-  code: string;
-  category:  null;
-  price: number | null;
-  stock: number | null;
-}
-const tost = useToast();
- function showCreateCategory(){
-  
-  tost.add({severity:'info', summary: 'Info', detail:'You have clicked the button', life: 3000});  
-};
-
-import { useToast } from "primevue/usetoast";
-import InputText from "primevue/inputtext";
-import Toast from "primevue/toast";
-const toast = useToast();
-const inputFile = ref(null);
-
-const upload = () => {
-  const nativeInput =
-    inputFile.value.$el?.querySelector("input") || inputFile.value.$el; // Fallback to $el if it's the input itself
-
-  if (nativeInput) {
-    nativeInput.click();
-  } else {
-    console.error("Native input element not found");
-  }
-};
-
-const onUpload = () => {
-  toast.add({
-    severity: "info",
-    summary: "Success",
-    detail: "File Uploaded",
-    life: 3000,
-  });
-};
-
-const showDialog = ref(false);
-
-
-
-const product = ref<Product>({
-  name: "",
-  code: "",
-  category: null,
-  price: null,
-  stock: null,
+watch(() => formProduct.barcode, (newBarcode) => {
+  barcodeText.value = newBarcode || '';
 });
 
+useToast();
+const showDialog = ref(false);
+
 function saveProduct() {
-  // Aquí va la lógica para guardar el producto
   showDialog.value = false;
-  // Resetear el formulario si lo deseas
 }
 </script>
 

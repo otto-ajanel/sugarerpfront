@@ -9,16 +9,19 @@ export function  useProduct() {
             purchase: false,
             others: false
         },
-        typeproduct:{
-            goods: false,
-            combos: false,
-            service: false
-        },
+        typeproduct:"goods",
         billingPolicy: {
             type: 'fixed',
             value: 0
         },
         categoryId: 0,
+        trackInventory: false,
+        barcode: '',
+        salePrice: 0,
+        taxsale: 0,
+        costPrice: 0,
+        taxpurchase: 0
+        
 
     });
     const readproduct =ref(false);

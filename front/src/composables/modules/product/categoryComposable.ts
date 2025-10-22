@@ -19,7 +19,7 @@ export default function useCategory() {
     }
 
     async function fnCreateCategory(newCategory:any){
-        const {data} =await saveData('categories',{newCategory})
+        const {data} =await saveData('createcategory',{newCategory})
         console.log(data)
     }
 

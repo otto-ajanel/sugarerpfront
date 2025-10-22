@@ -26,6 +26,14 @@ import TabPanels from "primevue/tabpanels";
 import RadioButton from "primevue/radiobutton";
 import InputNumber from "primevue/inputnumber";
 import Dialog from "primevue/dialog";
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import Tag from "primevue/tag";
+import Card from "primevue/card";
+import ToggleButton from "primevue/togglebutton";
+import Chip from "primevue/chip";
+import Toast from "./volt/Toast.vue";
+import Dropdown from "primevue/dropdown";
 
 import Aura from './assets/presets/Noir.js'
 import AnimateOnScroll from 'primevue/animateonscroll';
@@ -68,7 +76,17 @@ app.component('RadioButton', RadioButton);
 app.component('InputNumber', InputNumber);
 app.component('Select', Select);
 app.component('Dialog', Dialog);
+app.component('DataTable', DataTable);
+app.component('Column', Column);
+app.component('Tag', Tag);
+app.component('Card', Card);
+app.component('ToggleButton', ToggleButton);
+app.component('Chip', Chip);
+app.component('Dropdown', Dropdown);
+app.component('Toast', Toast);
+
 app.directive('animateonscroll', AnimateOnScroll);
+
 
 app.directive("styleclass", StyleClass);
 app.directive('tooltip', Tooltip);
