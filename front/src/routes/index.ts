@@ -27,7 +27,7 @@ const routes = [
         }, */
         {
             path:'products',
-            component: ()=>import('../modules/private/inventory/views/product.vue'),
+            component: ()=>import('../modules/private/inventory/views/Product.vue'),
             name:'products'
         }
     ]
@@ -40,10 +40,9 @@ const routes = [
     history: createWebHistory(),
     routes
 })
-router.beforeEach((to,from, next)=>{
+router.beforeEach((_,__, next)=>{
 
     const {isAuth} = storeToRefs(authStore())
-    console.log(isAuth)
 
     if (isAuth) {
         next()

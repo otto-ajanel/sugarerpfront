@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed w-full z-50">
+    <div class="fixed top-0 w-full z-50">
         <Toolbar :model="items" pt:root=" px-4">
             <template #start>
             <img src="../../../assets/imgs/oaLogo.png" alt="logo" width="30">
@@ -18,10 +18,9 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
-import Toolbar from '@/volt/Toolbar.vue';
-import Button from '@/volt/Button.vue';
+
 
  
 function menuitem(){

@@ -11,8 +11,6 @@
         </Dialog>
 </template>
 <script setup lang="ts">
-import Button from '@/volt/Button.vue';
-import Dialog from '@/volt/Dialog.vue';
 
 import { uiStore } from '../../../stores/uiStore';
 import { storeToRefs } from 'pinia';

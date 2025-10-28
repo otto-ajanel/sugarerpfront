@@ -11,9 +11,10 @@ export const uiStore = defineStore('uiStore', () => {
     const showModule = ref(false)
     const modules = ref()
     const moduleSelected = ref()
+    const showModalCategory = ref(false)
 
     async function getModulesAndMenus() {
-        const { data } = await getData('permissionsbyuser')
+        const { data } = await getData('permissionsbyuser',{})
         const originalData = data;
         const cleanedModules = transformModules(originalData);
         modules.value = organizeMenus(cleanedModules);
@@ -58,13 +59,13 @@ export const uiStore = defineStore('uiStore', () => {
     function organizeMenus(modules: any[]): any[] {
         return modules.map(module => {
             const menuMap = new Map();
-            const rootMenus = [];
+            const rootMenus:any[] = [];
 
-            module.menus.forEach(menu => {
+            module.menus.forEach((menu:any) => {
                 menuMap.set(menu.id_menu, { ...menu, submenus: [] });
             });
 
-            module.menus.forEach(menu => {
+            module.menus.forEach((menu:any) => {
                 const currentMenu = menuMap.get(menu.id_menu);
 
                 if (menu.id_menu_top === 0 || !menuMap.has(menu.id_menu_top)) {
@@ -95,7 +96,11 @@ export const uiStore = defineStore('uiStore', () => {
     }
     function navigatePath(path: String) {
         console.log(path)
-        navigateRouter.push(path)
+        navigateRouter.push(path as any)    
+    }
+
+    function fnShowModalCategory(value: boolean) {
+        showModalCategory.value = value
     }
 
     return {
@@ -107,7 +112,8 @@ export const uiStore = defineStore('uiStore', () => {
         showModule,
         filterMenu,
         moduleSelected,
-        navigatePath
+        navigatePath,
+        showModalCategory,
+        fnShowModalCategory
     }
-
 })

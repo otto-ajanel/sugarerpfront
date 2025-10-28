@@ -45,7 +45,7 @@
                       :class="{ 'border-b-2 border-primary dark:bg-blue-500': isMenuActive(submenu) }"
                       @click="selectMenuItem(submenu)"
                     >
-                      <i :class="[ 'pi '+ submenu.icon_menu, 'mr-2']" @click="uiStoreState.navigatePath(submenu.path_menu)"></i>
+                      <li :class="[ 'pi '+ submenu.icon_menu, 'mr-2']" @click="uiStoreState.navigatePath(submenu.path_menu)"></li>
                       <span @click="uiStoreState.navigatePath(submenu.path_menu)">{{ submenu.menu_name }}</span>
                     </div>
                   </li>
@@ -61,13 +61,13 @@
           >
             <li v-for="submenu in menu.submenus" :key="submenu.id_menu">
               <div
-                class="flex items-center p-2 rounded-lg cursor-pointer hover:bg-primary hover:text-white hover:bg-gray-600 dark:hover:bg-gray-600"
-                :class="{ 'border-b-2 border-primary dark:bg-blue-500': isMenuActive(submenu) }"
+                class="flex items-center p-1 cursor-pointer hover:bg-gray-50  dark:hover:bg-gray-600"
+                :class="{ 'border-b-1 p-0 border-primary-700 dark:bg-blue-500': isMenuActive(submenu) }"
                 @click="selectMenuItem(submenu)"
               >
-                <i 
+                <li
                 @click="uiStoreState.navigatePath(submenu.path_menu)"
-                :class="['pi '+submenu.icon_menu, 'mr-2']"></i>
+                :class="['pi '+submenu.icon_menu, 'mr-2']"></li>
                 <span
                 @click="uiStoreState.navigatePath(submenu.path_menu)"
                 >{{ submenu.menu_name }}</span>
@@ -86,13 +86,20 @@ import {uiStore} from '../../../stores/uiStore'
 import { storeToRefs } from 'pinia';
 
 const uiStoreState =uiStore()
-const { darkMode, moduleSelected } = storeToRefs(uiStoreState)
+const {  moduleSelected } = storeToRefs(uiStoreState)
 
-console.log(darkMode,moduleSelected)
+interface MenuItem {
+    id_menu: number | string;
+    menu_name: string;
+    path_menu: string;
+    icon_menu: string;
+    expanded?: boolean;
+    submenus: MenuItem[];
+}
 
+const activeMenu = ref<MenuItem | null>(null);
 
 const isCollapsed = ref(true);
-const activeMenu = ref(null);
 const activeHoverMenu = ref(null);
 
 const toggleCollapse = () => {
@@ -100,7 +107,7 @@ const toggleCollapse = () => {
   activeHoverMenu.value = null;
 };
 
-const toggleSubmenu = (menu) => {
+const toggleSubmenu = (menu:any) => {
   if (menu.submenus.length>0) {
     menu.expanded = !menu.expanded;
   } else {
@@ -108,17 +115,17 @@ const toggleSubmenu = (menu) => {
   }
 };
 
-const selectMenuItem = (menu) => {
+const selectMenuItem = (menu:any) => {
   activeMenu.value = menu;
   // Aquí manejarías el enrutamiento con Vue Router
   // router.push(menu.route);
 };
 
-const isMenuActive = (menu) => {
-  return activeMenu.value && activeMenu.value.id_menu === menu.id_menu;
+const isMenuActive = (menu:any) => {
+  return activeMenu.value && activeMenu.value.id_menu == menu.id_menu;
 };
 
-const handleMouseEnter = (menu) => {
+const handleMouseEnter = (menu:any) => {
   if (isCollapsed.value && menu.submenus.length>0) {
     activeHoverMenu.value = menu;
   }

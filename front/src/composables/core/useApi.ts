@@ -10,9 +10,13 @@ export  function useApi(){
         const data = await axios.get(apiUrl+"/api/v1/"+url, { headers: header, params});
         return data;
     }
-
+        async function saveData(url:String, body:any){
+            const data = await axios.post(apiUrl+"/api/v1/"+url, body, { headers: header});
+            return data;
+        }
     return{
-        getData
+        getData,
+        saveData
     }
 }
 

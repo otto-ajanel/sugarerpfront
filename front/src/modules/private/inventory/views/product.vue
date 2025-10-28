@@ -1,86 +1,50 @@
 <template>
   <div>
     <form @submit.prevent="saveProduct" class="space-y-4">
-      <div class="card flex flex-wrap justify-center gap-4">
-        <div class="relative">
-          <label class="block text-sm font-medium mb-1">Nombre producto</label>
+      <div class="card flex flex-wrap gap-4">
+        <div class="relative w-124">
+          <label class="block text-sm font-medium mb-1">Producto</label>
 
           <IconField>
-            <InputIcon class="pi pi-user" />
-            <InputText v-model="value1" placeholder="user" />
+            <InputIcon class="pi pi-box" />
+            <InputText
+              v-model="formProduct.nameProduct"
+              placeholder="Eje. Nintendo Wii"
+              size="large"
+              fluid
+            />
           </IconField>
         </div>
-        <div class="card flex flex-col justify-center items-end gap-4">
-          <br/>
-        <FloatLabel >
-          <Textarea
-            id="over_label"
-            v-model="value1"
-            rows="5"
-            cols="35"
-            style="resize: none"
-          />
-          <label for="over_label">Over Label</label>
-        </FloatLabel>
-        </div>
 
-        <div>
-          <div class="flex flex-col w-full">
-            <Avatar
-              @click="upload"
-              size="xlarge"
-              icon="pi pi-image"
-              class="w-10 h-10 border-2 text-2xl border-surface-300 dark:border-surface-700 img-upload"
-            />
-
-            <div class="card flex flex-wrap gap-6 items-center justify-between">
-              <InputText
-                type="file"
-                ref="inputFile"
-                icon="pi pi-image"
-                style="display: none"
-                label="Subir imagen"
-                >Subir
-              </InputText>
-            </div>
-          </div>
-        </div>
+        <div class="card flex flex-col gap-4"></div>
       </div>
 
       <div class="card flex flex-wrap justify-center gap-4">
         <div class="flex items-center gap-2">
           <Checkbox
-            v-model="pizza"
-            inputId="ingredient1"
-            name="pizza"
-            value="venta"
+            v-model="formProduct.enableFor.sale"
+            inputId="sale"
+            binary
           />
-          <label for="ingredient1"> Venta </label>
+          <label for="sale"> Venta </label>
         </div>
         <div class="flex items-center gap-2">
-          <Checkbox
-            v-model="pizza"
-            inputId="ingredient2"
-            name="pizza"
-            value="Punto de venta"
-          />
+          <Checkbox v-model="formProduct.enableFor.pos" inputId="pos" binary />
           <label for="ingredient2"> Punto de venta </label>
         </div>
         <div class="flex items-center gap-2">
           <Checkbox
-            v-model="pizza"
+            v-model="formProduct.enableFor.purchase"
             inputId="ingredient3"
-            name="pizza"
-            value="Compras"
+            binary
           />
           <label for="ingredient3"> Compras </label>
         </div>
         <div class="flex items-center gap-2">
           <Checkbox
-            v-model="pizza"
+            v-model="formProduct.enableFor.others"
             inputId="ingredient4"
-            name="pizza"
-            value="Onion"
+            binary
           />
           <label for="ingredient4"> Otros... </label>
         </div>
@@ -101,69 +65,193 @@
             <span class="font-bold whitespace-nowrap">Precio en venta</span>
             <Badge value="2" />
           </Tab>
+          <Tab value="3" class="flex items-center gap-2">
+            <Avatar icon="pi pi-wallet" class="mr-2" />
+            <span class="font-bold whitespace-nowrap">Imagenes</span>
+            <Badge value="2" />
+          </Tab>
         </TabList>
         <TabPanels>
           <TabPanel value="0">
-            <div class="flex flex-col justify-center items-center">
-              <label> Tipo de producto </label>
-              <div class="card flex justify-center">
-                <div class="flex flex-wrap gap-4">
-                  <div class="flex items-center gap-2">
-                    <RadioButton
-                      v-model="ingredient"
-                      inputId="ingredient1"
-                      name="pizza"
-                      value="Cheese"
-                    />
-                    <label for="ingredient1">Bienes</label>
+            <div class="flex flex w-full justify-evenly gap-8">
+              <div class="flex flex-col justyfy-center align-center gap-4">
+                <div class="card flex w-full justify-between">
+                  <label class=""> Tipo de producto: </label>
+                  <div class="flex flex-wrap gap-4">
+                    <div class="flex items-center gap-2 ml-4">
+                      <RadioButton
+                        v-model="formProduct.typeproduct"
+                        inputId="ingredient1"
+                        value="goods"
+                      />
+                      <label for="ingredient1">Bienes</label>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <RadioButton
+                        v-model="formProduct.typeproduct"
+                        inputId="ingredient2"
+                        value="service"
+                      />
+                      <label for="ingredient2">Servicios</label>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <RadioButton
+                        v-model="formProduct.typeproduct"
+                        inputId="ingredient3"
+                        value="combo"
+                      />
+                      <label for="ingredient3">Combos</label>
+                    </div>
                   </div>
-                  <div class="flex items-center gap-2">
-                    <RadioButton
-                      v-model="ingredient"
-                      inputId="ingredient2"
-                      name="pizza"
-                      value="Mushroom"
-                    />
-                    <label for="ingredient2">Servicios</label>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <RadioButton
-                      v-model="ingredient"
-                      inputId="ingredient3"
-                      name="pizza"
-                      value="Pepper"
-                    />
-                    <label for="ingredient3">Combinación+</label>
-                  </div>
+                </div>
+                <div class="flex w-full justify-between align-center">
+                  <label for="" class="text-primary"
+                    >Politicas de facturación:</label
+                  >
+                  <MultiSelect
+                    name="city"
+                    :options="[
+                      { name: 'Factura Electrónica', code: 'FE' },
+                      { name: 'Nota de Crédito', code: 'NC' },
+                    ]"
+                    optionLabel="name"
+                    filter
+                    placeholder="Select politica facturación"
+                    :maxSelectedLabels="3"
+                    class="w-1/2"
+                  />
+                </div>
+                <div class="flex w-full justify-between align-center">
+                  <label for="">Rastrar inventario:</label>
+                  <Checkbox
+                    class="w-1/2"
+                    v-model="formProduct.trackInventory"
+                    inputId="ingredient2"
+                    binary
+                  />
+                </div>
+                <div class="flex w-full justify-between">
+                  <label for="">Codigo de barra/ QR</label>
+                  <InputText v-model="formProduct.barcode" class="w-24rem" />
+                </div>
+                <div class="flex w-full justify-between">
+                  <label for=""> Imagen de codigo de barra / QR </label>
+                </div>
+                <div class="flex justify-center items-center h-24" >
+                  <svg class="h-24" ref="barcode" v-if="formProduct.barcode.trim().length > 0"></svg>
+
+                </div>
+                <!-- <img v-if="qrcode" :src="qrcode" alt="QR Code" /> -->
+
+              </div>
+              <div class="flex flex-col gap-4">
+                <div class="flex w-full justify-between">
+                  <label for="">Precio de venta</label>
+                  <InputNumber
+                    v-model="formProduct.salePrice"
+                    mode="currency"
+                    currency="GTQ"
+                    locale="en-GT"
+                    class="w-24rem"
+                  />
+                </div>
+
+                <div class="flex w-full justify-between">
+                  <label for="">Impuesto de ventas</label>
+                  <InputNumber
+                    v-model="formProduct.taxsale"
+                    mode="currency"
+                    currency="GTQ"
+                    locale="en-GT"
+                    class="w-24rem"
+                  />
+                </div>
+                <div class="flex w-full justify-between">
+                  <label for="">Costo</label>
+                  <InputNumber
+                    v-model="formProduct.costPrice"
+                    mode="currency"
+                    currency="GTQ"
+                    locale="en-GT"
+                    class="w-24rem"
+                  />
+                </div>
+                <div class="flex w-full justify-between">
+                  <label for="">Impuesto de compra </label>
+                  <InputNumber
+                    v-model="formProduct.taxpurchase"
+                    mode="currency"
+                    currency="GTQ"
+                    locale="en-GT"
+                    class="w-24rem"
+                  />
+                </div>
+                <div class="flex w-full justify-between">
+                  <label for="">Categoria</label>
+                  <Select
+                    v-model="formProduct.categoryId"
+                    :options="categories"
+                    optionLabel="name"
+                    placeholder="Select a Category"
+                    class="w-full md:w-56"
+                  >
+                    <template #value="slotProps">
+                      <div v-if="slotProps.value" class="flex items-center">
+                        <img
+                          :alt="slotProps.value.label"
+                          src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
+                          :class="`mr-2 flag flag-${slotProps.value.code
+                            .toString()
+                            .toLowerCase()}`"
+                          style="width: 18px"
+                        />
+                        <div>{{ slotProps.value.name }}</div>
+                      </div>
+                      <span v-else>
+                        {{ slotProps.placeholder }}
+                      </span>
+                    </template>
+                    <template #option="slotProps">
+                      <div class="flex items-center">
+                        <img
+                          :alt="slotProps.option.label"
+                          src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
+                          :class="`mr-2 flag flag-${slotProps.option.code
+                            .toString()
+                            .toLowerCase()}`"
+                          style="width: 18px"
+                        />
+                        <div>{{ slotProps.option.name }}</div>
+                      </div>
+                    </template>
+                    <template #dropdownicon>
+                      <i class="pi pi-map" />
+                    </template>
+                    <template #header>
+                      <div class="font-medium p-3">Available Countries</div>
+                    </template>
+                    <template #footer>
+                      <div class="p-3">
+                        <Button
+                          @click="activemodal()"
+                          label="Add New"
+                          fluid
+                          severity="secondary"
+                          variant="text"
+                          size="small"
+                          icon="pi pi-plus"
+                        />
+                      </div>
+                    </template>
+                  </Select>
                 </div>
               </div>
             </div>
-            <div>
-              <FileUpload
-                name="demo[]"
-                url="/api/upload"
-                :multiple="false"
-                accept="image/*"
-                :maxFileSize="1000000"
-              >
-                <template #empty>
-                  <span>Drag and drop files to here to upload.</span>
-                </template>
-              </FileUpload>
-            </div>
           </TabPanel>
           <TabPanel value="1">
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-              accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-              quae ab illo inventore veritatis et quasi architecto beatae vitae
-              dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
-              aspernatur aut odit aut fugit, sed quia consequuntur magni dolores
-              eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci
-              velit, sed quia non numquam eius modi.
-            </p>
+            <AtributeVariant />
           </TabPanel>
-          <TabPanel value="2">
+          <TabPanel value="2" as="p" class="m-0">
             <p>
               At vero eos et accusamus et iusto odio dignissimos ducimus qui
               blanditiis praesentium voluptatum deleniti atque corrupti quos
@@ -174,103 +262,93 @@
               nobis est eligendi optio cumque nihil impedit quo minus.
             </p>
           </TabPanel>
+          <TabPanel value="3">
+            <FileUpload
+              name="demo[]"
+              url="/api/upload"
+              :multiple="true"
+              accept="image/*"
+              :maxFileSize="1000000"
+            >
+              <template #empty>
+                <span>Drag and drop files to here to upload.</span>
+              </template>
+            </FileUpload>
+          </TabPanel>
         </TabPanels>
       </Tabs>
 
-      <Button
-        label="Limpiar"
-        severity="secondary"
-        @click="showDialog = false"
-      />
-
-      <Button class="ml-8" label="Guardar" type="submit" />
+      <Button label="Guardar" severity="" type="submit" />
     </form>
+    <Category />
+    <Toast />
   </div>
 </template>
 
 <script lang="ts" setup>
-import Avatar from "@/volt/Avatar.vue";
-import Badge from "@/volt/Badge.vue";
-import Tabs from "@/volt/Tabs.vue";
-import TabList from "@/volt/TabList.vue";
-import Tab from "@/volt/Tab.vue";
-import TabPanels from "@/volt/TabPanels.vue";
-import TabPanel from "@/volt/TabPanel.vue";
-import { ref } from "vue";
-import Button from "@/volt/Button.vue";
-import Dialog from "@/volt/dialog.vue";
-
-import Select from "@/volt/Select.vue";
-
-const pizza = ref(null);
-
-interface Category {
-  id: number;
-  name: string;
-}
-import RadioButton from "@/volt/RadioButton.vue";
-
-const ingredient = ref(null);
-
-interface Product {
-  name: string;
-  code: string;
-  category: Category | null;
-  price: number | null;
-  stock: number | null;
-}
-
+import { ref, watch, onMounted, defineAsyncComponent } from "vue";
+import JsBarcode from 'jsbarcode';
+import { useQRCode } from "@vueuse/integrations/useQRCode";
+import { useProduct } from "../../../../composables/modules/product/productComposable";
+import useCategory from "../../../../composables/modules/product/categoryComposable";
+import { uiStore } from "../../../../stores/uiStore";
 import { useToast } from "primevue/usetoast";
-const toast = useToast();
-const inputFile = ref(null);
+import Category from "./Category.vue";
+const AtributeVariant = defineAsyncComponent(
+  () => import("./AtributeVariant.vue")
+);
 
-const upload = () => {
-  const nativeInput =
-    inputFile.value.$el?.querySelector("input") || inputFile.value.$el; // Fallback to $el if it's the input itself
+const { formProduct, fnCreateProduct } = useProduct();
 
-  if (nativeInput) {
-    nativeInput.click();
-  } else {
-    console.error("Native input element not found");
+const { categories, getAllCategories } = useCategory();
+const { fnShowModalCategory } = uiStore();
+getAllCategories();
+
+function activemodal() {
+  fnShowModalCategory(true);
+}
+
+const barcodeText = ref(formProduct.barcode);
+const qrcode = useQRCode(barcodeText);
+
+watch(
+  () => formProduct.barcode,
+  (newBarcode) => {
+    barcodeText.value = newBarcode.trim().length > 0 ? newBarcode : "";
+  }
+);
+
+useToast();
+
+function saveProduct() {
+  fnCreateProduct();
+}
+
+const barcode = ref(null);
+
+const generateBarcode = () => {
+  if (barcode.value && formProduct.barcode) {
+    JsBarcode(barcode.value, formProduct.barcode, {
+      format: 'CODE128',
+      width: 2,
+      height: 100,
+      displayValue: true,
+      text: formProduct.barcode,
+      fontOptions: 'bold'
+    });
   }
 };
 
-const onUpload = () => {
-  toast.add({
-    severity: "info",
-    summary: "Success",
-    detail: "File Uploaded",
-    life: 3000,
-  });
-};
+// Regenerar cuando cambie el dato
+watch(()=>formProduct.barcode, generateBarcode);
 
-const showDialog = ref(false);
-
-const categories = ref<Category[]>([
-  { id: 1, name: "Electrónica" },
-  { id: 2, name: "Ropa" },
-  { id: 3, name: "Alimentos" },
-]);
-
-const product = ref<Product>({
-  name: "",
-  code: "",
-  category: null,
-  price: null,
-  stock: null,
-});
-
-function saveProduct() {
-  // Aquí va la lógica para guardar el producto
-  showDialog.value = false;
-  // Resetear el formulario si lo deseas
-}
+// Generar inicialmente
+onMounted(generateBarcode);
 </script>
 
 <style scoped>
 .img-upload {
   width: 80px;
   height: 80px;
-  background-image: url("@/assets/images/placeholder.png");
 }
 </style>

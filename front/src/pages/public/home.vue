@@ -44,7 +44,6 @@ import img3 from "../../assets/imgs/homeImages/pexels-pixabay-38568.jpg";
 import img4 from "../../assets/imgs/homeImages/pexels-tima-miroshnichenko-5717202.jpg";
 
 import { ref } from "vue";
-import Galleria from "primevue/galleria";
 
 const images = ref([
     {
