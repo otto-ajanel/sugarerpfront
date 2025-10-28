@@ -32,10 +32,11 @@ import Tag from "primevue/tag";
 import Card from "primevue/card";
 import ToggleButton from "primevue/togglebutton";
 import Chip from "primevue/chip";
-import Toast from "./volt/Toast.vue";
 import Dropdown from "primevue/dropdown";
+import Toast from "primevue/toast";
 
-import Aura from './assets/presets/Noir.js'
+// @ts-ignore
+import Aura from './assets/presets/Noir.js' 
 import AnimateOnScroll from 'primevue/animateonscroll';
 
 

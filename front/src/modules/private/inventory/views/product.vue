@@ -113,7 +113,6 @@
                     :options="[
                       { name: 'Factura Electrónica', code: 'FE' },
                       { name: 'Nota de Crédito', code: 'NC' },
-
                     ]"
                     optionLabel="name"
                     filter
@@ -133,15 +132,17 @@
                 </div>
                 <div class="flex w-full justify-between">
                   <label for="">Codigo de barra/ QR</label>
-                  <InputText
-                    v-model="formProduct.barcode"
-                    class="w-24rem"
-                  />
+                  <InputText v-model="formProduct.barcode" class="w-24rem" />
                 </div>
                 <div class="flex w-full justify-between">
                   <label for=""> Imagen de codigo de barra / QR </label>
-                  <img v-if="qrcode" :src="qrcode" alt="QR Code" />
                 </div>
+                <div class="flex justify-center items-center h-24" >
+                  <svg class="h-24" ref="barcode" v-if="formProduct.barcode.trim().length > 0"></svg>
+
+                </div>
+                <!-- <img v-if="qrcode" :src="qrcode" alt="QR Code" /> -->
+
               </div>
               <div class="flex flex-col gap-4">
                 <div class="flex w-full justify-between">
@@ -154,14 +155,14 @@
                     class="w-24rem"
                   />
                 </div>
-              
+
                 <div class="flex w-full justify-between">
                   <label for="">Impuesto de ventas</label>
                   <InputNumber
                     v-model="formProduct.taxsale"
                     mode="currency"
                     currency="GTQ"
-                    locale="en-GT"  
+                    locale="en-GT"
                     class="w-24rem"
                   />
                 </div>
@@ -171,7 +172,7 @@
                     v-model="formProduct.costPrice"
                     mode="currency"
                     currency="GTQ"
-                    locale="en-GT"  
+                    locale="en-GT"
                     class="w-24rem"
                   />
                 </div>
@@ -181,7 +182,7 @@
                     v-model="formProduct.taxpurchase"
                     mode="currency"
                     currency="GTQ"
-                    locale="en-GT"  
+                    locale="en-GT"
                     class="w-24rem"
                   />
                 </div>
@@ -199,7 +200,9 @@
                         <img
                           :alt="slotProps.value.label"
                           src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
-                          :class="`mr-2 flag flag-${slotProps.value.code.toString().toLowerCase()}`"
+                          :class="`mr-2 flag flag-${slotProps.value.code
+                            .toString()
+                            .toLowerCase()}`"
                           style="width: 18px"
                         />
                         <div>{{ slotProps.value.name }}</div>
@@ -213,7 +216,9 @@
                         <img
                           :alt="slotProps.option.label"
                           src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
-                          :class="`mr-2 flag flag-${slotProps.option.code.toString().toLowerCase()}`"
+                          :class="`mr-2 flag flag-${slotProps.option.code
+                            .toString()
+                            .toLowerCase()}`"
                           style="width: 18px"
                         />
                         <div>{{ slotProps.option.name }}</div>
@@ -228,7 +233,7 @@
                     <template #footer>
                       <div class="p-3">
                         <Button
-                        @click="activemodal()"
+                          @click="activemodal()"
                           label="Add New"
                           fluid
                           severity="secondary"
@@ -244,7 +249,7 @@
             </div>
           </TabPanel>
           <TabPanel value="1">
-            <AtributeVariant/>
+            <AtributeVariant />
           </TabPanel>
           <TabPanel value="2" as="p" class="m-0">
             <p>
@@ -273,54 +278,77 @@
         </TabPanels>
       </Tabs>
 
-      <Button label="Guardar" severity="" @click="showDialog = false" />
+      <Button label="Guardar" severity="" type="submit" />
     </form>
-    <Category/>
+    <Category />
     <Toast />
-
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, defineAsyncComponent } from "vue";
+import { ref, watch, onMounted, defineAsyncComponent } from "vue";
+import JsBarcode from 'jsbarcode';
+import { useQRCode } from "@vueuse/integrations/useQRCode";
 import { useProduct } from "../../../../composables/modules/product/productComposable";
 import useCategory from "../../../../composables/modules/product/categoryComposable";
 import { uiStore } from "../../../../stores/uiStore";
 import { useToast } from "primevue/usetoast";
 import Category from "./Category.vue";
-const AtributeVariant = defineAsyncComponent(() => import('./AtributeVariant.vue'));
+const AtributeVariant = defineAsyncComponent(
+  () => import("./AtributeVariant.vue")
+);
 
-const { formProduct } = useProduct();
+const { formProduct, fnCreateProduct } = useProduct();
 
 const { categories, getAllCategories } = useCategory();
 const { fnShowModalCategory } = uiStore();
 getAllCategories();
 
-function activemodal(){
-  
-  fnShowModalCategory(true)
-  
+function activemodal() {
+  fnShowModalCategory(true);
 }
 
 const barcodeText = ref(formProduct.barcode);
-const qrcode = ref('');
+const qrcode = useQRCode(barcodeText);
 
-watch(() => formProduct.barcode, (newBarcode) => {
-  barcodeText.value = newBarcode || '';
-});
+watch(
+  () => formProduct.barcode,
+  (newBarcode) => {
+    barcodeText.value = newBarcode.trim().length > 0 ? newBarcode : "";
+  }
+);
 
 useToast();
-const showDialog = ref(false);
 
 function saveProduct() {
-  showDialog.value = false;
+  fnCreateProduct();
 }
+
+const barcode = ref(null);
+
+const generateBarcode = () => {
+  if (barcode.value && formProduct.barcode) {
+    JsBarcode(barcode.value, formProduct.barcode, {
+      format: 'CODE128',
+      width: 2,
+      height: 100,
+      displayValue: true,
+      text: formProduct.barcode,
+      fontOptions: 'bold'
+    });
+  }
+};
+
+// Regenerar cuando cambie el dato
+watch(()=>formProduct.barcode, generateBarcode);
+
+// Generar inicialmente
+onMounted(generateBarcode);
 </script>
 
 <style scoped>
 .img-upload {
   width: 80px;
   height: 80px;
-  background-image: url("@/assets/images/placeholder.png");
 }
 </style>

@@ -18,10 +18,9 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
-import Toolbar from '@/volt/Toolbar.vue';
-import Button from '@/volt/Button.vue';
+
 
  
 function menuitem(){

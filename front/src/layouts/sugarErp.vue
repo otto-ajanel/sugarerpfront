@@ -9,11 +9,9 @@
     </div>
 </template>
 <script setup lang="ts">
-import { provideApolloClient, useQuery } from "@vue/apollo-composable";
 import MenuSugarERP from "../../src/components/SugarERP/Menu/index.vue"
 import SideBar from "../components/SugarERP/Menu/SideBar.vue";
 
-import gql from "graphql-tag";
 
 import { uiStore } from "../stores/uiStore";
 const {getModulesAndMenus} = uiStore()

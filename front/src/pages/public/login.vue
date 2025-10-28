@@ -37,8 +37,7 @@ import {authStore} from '../../stores/auth'
 import imageLogin from '../../assets/imgs/homeImages/loginimages/undraw_design-components_529l.svg'
 import imgsignin from '../../assets/imgs/homeImages/loginimages/undraw_fingerprint_kdwq.svg'
 import {useRouter}from 'vue-router'
-import Button from '@/volt/Button.vue'
-import InputText from '@/volt/InputText.vue';
+
 const toast = useToast()
 
 const router = useRouter()
@@ -48,7 +47,7 @@ const pass  =  ref("")
 const {login}= authStore() 
 const {isAuth} = storeToRefs(authStore())
 
-watch(isAuth, async(newValue, oldValue)=>{
+watch(isAuth, async(newValue)=>{
 if (newValue) {
     router.push('/erp')
 }

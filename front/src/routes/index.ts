@@ -40,10 +40,9 @@ const routes = [
     history: createWebHistory(),
     routes
 })
-router.beforeEach((to,from, next)=>{
+router.beforeEach((_,__, next)=>{
 
     const {isAuth} = storeToRefs(authStore())
-    console.log(isAuth)
 
     if (isAuth) {
         next()
