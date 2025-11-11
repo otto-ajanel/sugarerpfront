@@ -18,6 +18,7 @@
       </div>
     </div>
 
+    <!-- Tabla estilo Odoo -->
     <div class="odoo-table-container" v-if="items.length > 0">
       <DataTable 
         :value="items" 

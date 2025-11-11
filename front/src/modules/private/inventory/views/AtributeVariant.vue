@@ -1,18 +1,9 @@
 <template>
   <div class="p-4">
-    <AttributeForm
-      title="Líneas de Factura"
-      :fields="invoiceFields"
-      :show-totals="true"
-      @change="onInvoiceLinesChange"
-      @item-added="onItemAdded"
-      @item-removed="onItemRemoved"
-      @item-changed="onItemChanged"
-    />
 
     <div class="mt-6">
       <AttributeForm
-        title="Detalles de Producto"
+        title="Atributo del producto"
         :fields="productFields"
         :initial-data="initialProductData"
         @change="onProductDetailsChange"
@@ -27,65 +18,27 @@ import type { Field } from '../types/Field';
 
 const AttributeForm = defineAsyncComponent(() => import('./AttributeForm.vue'));
 
-// Campos para líneas de factura
-const invoiceFields: Field[] = [
-  {
-    key: 'product',
-    label: 'Producto',
-    type: 'text',
-    placeholder: 'Nombre del producto'
-  },
-  {
-    key: 'quantity',
-    label: 'Cantidad',
-    type: 'number',
-    placeholder: '0.00',
-    total: true
-  },
-  {
-    key: 'price',
-    label: 'Precio Unitario',
-    type: 'number',
-    placeholder: '0.00',
-    total: true
-  },
-  {
-    key: 'tax',
-    label: 'Impuesto',
-    type: 'selection',
-    options: [
-      { label: 'IVA 12%', value: 0.12 },
-      { label: 'IVA 0%', value: 0 },
-      { label: 'Exento', value: 'exempt' }
-    ]
-  },
-  {
-    key: 'discount',
-    label: 'Descuento',
-    type: 'number',
-    placeholder: '0.00'
-  }
-];
-
 // Campos para detalles de producto
 const productFields: Field[] = [
   {
-    key: 'attribute',
-    label: 'Atributo',
-    type: 'text',
-    placeholder: 'Color, Tamaño, etc.'
+    key: 'atribute',
+    label: 'Atribute',
+    type: 'selection',
+    options: [
+      { label: 'atribute uno ', value: 'atribute1' },
+      { label: 'atribute dos', value: 'atribute2' } 
+ 
+    ]
   },
   {
-    key: 'value',
-    label: 'Valor',
-    type: 'text',
-    placeholder: 'Valor del atributo'
-  },
-  {
-    key: 'priceExtra',
-    label: 'Precio Extra',
-    type: 'number',
-    placeholder: '0.00'
+    key: 'atribute',
+    label: 'Atribute',
+    type: 'selection',
+    options: [
+      { label: 'atribute uno ', value: 'atribute1' },
+      { label: 'atribute dos', value: 'atribute2' } 
+ 
+    ]
   },
   {
     key: 'active',

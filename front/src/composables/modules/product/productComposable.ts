@@ -5,8 +5,9 @@ import { useApi } from "../../core/useApi";
 export function  useProduct() {
 
     const toast = useToast();
+    const products= ref<any[]>([]);
 
-    const {saveData} = useApi();
+    const {saveData, getData} = useApi();
     const formProduct= reactive({
         nameProduct: '',
         enableFor:{
@@ -16,10 +17,7 @@ export function  useProduct() {
             others: false
         },
         typeproduct:"goods",
-        billingPolicy: {
-            type: 'fixed',
-            value: 0
-        },
+        billingPolicy:null,
         categoryId: 0,
         trackInventory: false,
         barcode: '',
@@ -48,6 +46,14 @@ export function  useProduct() {
         
     }
 
+    function fnGetProducts(){
+        getData('products',{}).then((res:any)=>{
+            if(res.status==200){
+                products.value=res.data;
+            }
+        })
+    }
+
     function valideProduc(){
         if(formProduct.nameProduct.trim().length>0){
             return true
@@ -61,6 +67,8 @@ export function  useProduct() {
     return {
         formProduct,
         readproduct,
-        fnCreateProduct
+        fnCreateProduct,
+        fnGetProducts,
+        products
     };
 }
