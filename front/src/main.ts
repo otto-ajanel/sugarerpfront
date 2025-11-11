@@ -34,6 +34,8 @@ import ToggleButton from "primevue/togglebutton";
 import Chip from "primevue/chip";
 import Dropdown from "primevue/dropdown";
 import Toast from "primevue/toast";
+import Toolbar from "primevue/toolbar";
+import Image from 'primevue/image';
 
 // @ts-ignore
 import Aura from './assets/presets/Noir.js' 
@@ -49,6 +51,11 @@ const pinia = createPinia()
 const app = createApp(App);
 app.use(PrimeVue, { theme:{
     preset:Aura,
+    options: {
+            prefix: 'p',
+            darkModeSelector: '.p-dark',
+            cssLayer: false,
+        }
 },
 ripple: true
 
@@ -85,6 +92,9 @@ app.component('ToggleButton', ToggleButton);
 app.component('Chip', Chip);
 app.component('Dropdown', Dropdown);
 app.component('Toast', Toast);
+app.component('Toolbar', Toolbar);  
+app.component('Image', Image);
+
 
 app.directive('animateonscroll', AnimateOnScroll);
 

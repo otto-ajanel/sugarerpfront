@@ -24,7 +24,7 @@
                 <FloatLabel>
                     <IconField>
                         <InputIcon class="pi pi-envelope" />
-                        <InputText id="over_label" v-model="email" autocomplete="off" />
+                        <InputText id="over_label" v-model="email" autocomplete="off" type="text" />
                     </IconField>
                     <label for="over_label">Email</label>
                 </FloatLabel>

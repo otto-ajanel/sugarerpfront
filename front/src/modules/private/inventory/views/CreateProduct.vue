@@ -60,11 +60,7 @@
             <Avatar icon="pi pi-info-circle" class="" />
             <span class="font-bold whitespace-nowrap">Atributos variantes</span>
           </Tab>
-          <Tab value="2" class="flex items-center gap-2">
-            <Avatar icon="pi pi-wallet" class="mr-2" />
-            <span class="font-bold whitespace-nowrap">Precio en venta</span>
-            <Badge value="2" />
-          </Tab>
+        
           <Tab value="3" class="flex items-center gap-2">
             <Avatar icon="pi pi-wallet" class="mr-2" />
             <span class="font-bold whitespace-nowrap">Imagenes</span>
@@ -82,7 +78,7 @@
                       <RadioButton
                         v-model="formProduct.typeproduct"
                         inputId="ingredient1"
-                        value="goods"
+                        value="1"
                       />
                       <label for="ingredient1">Bienes</label>
                     </div>
@@ -90,7 +86,7 @@
                       <RadioButton
                         v-model="formProduct.typeproduct"
                         inputId="ingredient2"
-                        value="service"
+                        value="2"
                       />
                       <label for="ingredient2">Servicios</label>
                     </div>
@@ -98,7 +94,7 @@
                       <RadioButton
                         v-model="formProduct.typeproduct"
                         inputId="ingredient3"
-                        value="combo"
+                        value="3"
                       />
                       <label for="ingredient3">Combos</label>
                     </div>
@@ -108,11 +104,11 @@
                   <label for="" class="text-primary"
                     >Politicas de facturación:</label
                   >
-                  <MultiSelect
-                    name="city"
+                  <Select
+                    v-model="formProduct.billingPolicy"
                     :options="[
-                      { name: 'Factura Electrónica', code: 'FE' },
-                      { name: 'Nota de Crédito', code: 'NC' },
+                      { name: 'Solicitados', code: 1 },
+                      { name: 'Entregados', code: 2 },
                     ]"
                     optionLabel="name"
                     filter
@@ -228,7 +224,7 @@
                       <i class="pi pi-map" />
                     </template>
                     <template #header>
-                      <div class="font-medium p-3">Available Countries</div>
+                      <div class="font-medium p-3">Aviable categories</div>
                     </template>
                     <template #footer>
                       <div class="p-3">
@@ -251,17 +247,7 @@
           <TabPanel value="1">
             <AtributeVariant />
           </TabPanel>
-          <TabPanel value="2" as="p" class="m-0">
-            <p>
-              At vero eos et accusamus et iusto odio dignissimos ducimus qui
-              blanditiis praesentium voluptatum deleniti atque corrupti quos
-              dolores et quas molestias excepturi sint occaecati cupiditate non
-              provident, similique sunt in culpa qui officia deserunt mollitia
-              animi, id est laborum et dolorum fuga. Et harum quidem rerum
-              facilis est et expedita distinctio. Nam libero tempore, cum soluta
-              nobis est eligendi optio cumque nihil impedit quo minus.
-            </p>
-          </TabPanel>
+          
           <TabPanel value="3">
             <FileUpload
               name="demo[]"
