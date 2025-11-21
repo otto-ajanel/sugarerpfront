@@ -36,6 +36,8 @@ import Dropdown from "primevue/dropdown";
 import Toast from "primevue/toast";
 import Toolbar from "primevue/toolbar";
 import Image from 'primevue/image';
+import Drawer from 'primevue/drawer';
+import {Form} from '@primevue/forms';
 
 // @ts-ignore
 import Aura from './assets/presets/Noir.js' 
@@ -94,6 +96,9 @@ app.component('Dropdown', Dropdown);
 app.component('Toast', Toast);
 app.component('Toolbar', Toolbar);  
 app.component('Image', Image);
+app.component('Drawer', Drawer);
+app.component('Form', Form);
+
 
 
 app.directive('animateonscroll', AnimateOnScroll);

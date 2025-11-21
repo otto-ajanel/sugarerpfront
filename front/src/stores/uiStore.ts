@@ -15,6 +15,7 @@ export const uiStore = defineStore('uiStore', () => {
 
     async function getModulesAndMenus() {
         const { data } = await getData('permissionsbyuser',{})
+        
         const originalData = data;
         const cleanedModules = transformModules(originalData);
         modules.value = organizeMenus(cleanedModules);
@@ -25,6 +26,7 @@ export const uiStore = defineStore('uiStore', () => {
     }
 
     function transformModules(data: any[]): any[] {
+
         const moduleMap = new Map();
 
         data.forEach(item => {
@@ -49,7 +51,8 @@ export const uiStore = defineStore('uiStore', () => {
                 id_permission: item.id_permission,
                 id_user: item.id_user
             };
-
+            //console.log('Menu Item:', menuItem);    
+            
             moduleMap.get(item.id_module).menus.push(menuItem);
         });
 

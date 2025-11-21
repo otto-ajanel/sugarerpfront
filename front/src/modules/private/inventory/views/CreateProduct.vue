@@ -280,7 +280,7 @@ import useCategory from "../../../../composables/modules/product/categoryComposa
 import { uiStore } from "../../../../stores/uiStore";
 import { useToast } from "primevue/usetoast";
 import Category from "./Category.vue";
-const AtributeVariant = defineAsyncComponent(
+const  AtributeVariant = defineAsyncComponent(
   () => import("./AtributeVariant.vue")
 );
 

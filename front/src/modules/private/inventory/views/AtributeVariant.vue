@@ -7,32 +7,45 @@
         :fields="productFields"
         :initial-data="initialProductData"
         @change="onProductDetailsChange"
+        @addNew="fnShowModalAtribute"
       />
     </div>
+    <CreateAtribute />
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent } from 'vue';
+import { defineAsyncComponent, onMounted, computed } from 'vue';
 import type { Field } from '../types/Field';
+import useAtribute from '../../../../composables/modules/product/atributeComposable';
 
+const {setShowModalAtribute, atributes, getAtributes} = useAtribute()
 const AttributeForm = defineAsyncComponent(() => import('./AttributeForm.vue'));
+const CreateAtribute = defineAsyncComponent(() => import('./CreateAtribute.vue'));
+
+const fnShowModalAtribute = () => {
+  setShowModalAtribute(true)
+};
+
+onMounted(async () => {
+  await getAtributes();
+});
 
 // Campos para detalles de producto
-const productFields: Field[] = [
+const productFields = computed((): Field[] =>  [
   {
     key: 'atribute',
     label: 'Atribute',
-    type: 'selection',
-    options: [
-      { label: 'atribute uno ', value: 'atribute1' },
-      { label: 'atribute dos', value: 'atribute2' } 
- 
-    ]
+    type: 'selectionadd',
+    options: atributes.value.map((attr) => {
+      return {  
+      label: attr.atribute_des,
+      value: attr.atribute_id}
+    }),
   },
   {
-    key: 'atribute',
-    label: 'Atribute',
+    key: 'atribute2',
+    label: 'Detalle de atributo',
     type: 'selection',
     options: [
       { label: 'atribute uno ', value: 'atribute1' },
@@ -45,12 +58,9 @@ const productFields: Field[] = [
     label: 'Activo',
     type: 'boolean'
   }
-];
+]);
 
-const initialProductData = [
-  { attribute: 'Color', value: 'Rojo', priceExtra: 10.00, active: true },
-  { attribute: 'Tamaño', value: 'Grande', priceExtra: 15.00, active: true }
-];
+const initialProductData = [];
 
 // Event handlers
 const onInvoiceLinesChange = (items: any[]) => {
