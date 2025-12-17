@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
 import { useProduct } from "../../../../composables/modules/product/productComposable";
 
 const { products, fnGetProducts } = useProduct();

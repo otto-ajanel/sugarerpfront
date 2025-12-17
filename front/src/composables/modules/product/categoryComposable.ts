@@ -8,9 +8,9 @@ export default function useCategory() {
     async function getAllCategories() {
         const {data} =await getData('categories',{})
         categories.value = data.map((cat:any) => ({
-            code: cat.id_category,
-            des_category: cat.des_category,
-            name: cat.des_category,
+            code: cat.id,
+            des_category: cat.des,
+            name: cat.des,
         }))
 
     }

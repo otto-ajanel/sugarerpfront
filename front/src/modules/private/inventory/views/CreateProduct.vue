@@ -274,15 +274,15 @@
 <script lang="ts" setup>
 import { ref, watch, onMounted, defineAsyncComponent } from "vue";
 import JsBarcode from 'jsbarcode';
-import { useQRCode } from "@vueuse/integrations/useQRCode";
 import { useProduct } from "../../../../composables/modules/product/productComposable";
 import useCategory from "../../../../composables/modules/product/categoryComposable";
 import { uiStore } from "../../../../stores/uiStore";
 import { useToast } from "primevue/usetoast";
-import Category from "./Category.vue";
-const AtributeVariant = defineAsyncComponent(
+
+const  AtributeVariant = defineAsyncComponent(
   () => import("./AtributeVariant.vue")
 );
+const  Category = defineAsyncComponent(() => import("./Category.vue"));
 
 const { formProduct, fnCreateProduct } = useProduct();
 
@@ -295,7 +295,6 @@ function activemodal() {
 }
 
 const barcodeText = ref(formProduct.barcode);
-const qrcode = useQRCode(barcodeText);
 
 watch(
   () => formProduct.barcode,

@@ -8,9 +8,9 @@
         <Badge v-if="items.length > 0" :value="items.length" class="ml-2" />
       </div>
       <div class="header-right">
-        <Button 
-          icon="pi pi-plus" 
-          label="Agregar Línea" 
+        <Button
+          icon="pi pi-plus"
+          label="Agregar Línea"
           severity="primary"
           size="small"
           @click="addItem"
@@ -19,8 +19,8 @@
     </div>
 
     <div class="odoo-table-container" v-if="items.length > 0">
-      <DataTable 
-        :value="items" 
+      <DataTable
+        :value="items"
         dataKey="id"
         :scrollable="true"
         scrollHeight="flex"
@@ -28,7 +28,7 @@
         :pt="{
           table: { class: 'odoo-table-main' },
           thead: { class: 'odoo-thead' },
-          tbody: { class: 'odoo-tbody' }
+          tbody: { class: 'odoo-tbody' },
         }"
       >
         <!-- Columna de secuencia -->
@@ -41,8 +41,8 @@
         </Column>
 
         <!-- Campos dinámicos -->
-        <Column 
-          v-for="field in fields" 
+        <Column
+          v-for="field in fields"
           :key="field.key"
           :field="field.key"
           :header="field.label"
@@ -51,7 +51,7 @@
           <template #body="{ data }">
             <div class="field-cell">
               <!-- Input Text -->
-              <InputText 
+              <InputText
                 v-if="field.type === 'text'"
                 v-model="data[field.key]"
                 class="odoo-input"
@@ -60,7 +60,7 @@
               />
 
               <!-- Number Input -->
-              <InputNumber 
+              <InputNumber
                 v-else-if="field.type == 'number'"
                 v-model="data[field.key]"
                 mode="decimal"
@@ -72,7 +72,7 @@
               />
 
               <!-- Dropdown -->
-              <Dropdown 
+              <Dropdown
                 v-else-if="field.type === 'selection'"
                 v-model="data[field.key]"
                 :options="field.options"
@@ -83,8 +83,68 @@
                 @change="onFieldChange(data, field.key)"
               />
 
+              <Select
+                editable
+                v-else-if="field.type === 'selectionadd'"
+                v-model="data[field.key].value"
+                :options="data[field.key].options"
+                optionLabel="label"
+                placeholder="Select a atrobite"
+                class="w-full md:w-56"
+                @change="onFieldChange(data, field.key)"
+              >
+                <template #value="slotProps">
+                  <div v-if="slotProps.value" class="flex items-center">
+                    <img
+                      :alt="slotProps.value.label"
+                      src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
+                      :class="`mr-2 flag flag-${slotProps.value
+                        .toString()
+                        .toLowerCase()}`"
+                      style="width: 18px"
+                    />
+                    <div>{{ slotProps.value.label }}</div>
+                  </div>
+                  <span v-else>
+                    {{ slotProps.placeholder }}
+                  </span>
+                </template>
+                <template #option="slotProps">
+                  <div class="flex items-center">
+                    <img
+                      :alt="slotProps.option.label"
+                      src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
+                      :class="`mr-2 flag flag-${slotProps.option.value
+                        .toString()
+                        .toLowerCase()}`"
+                      style="width: 18px"
+                    />
+                    <div>{{ slotProps.option.label }}</div>
+                  </div>
+                </template>
+                <template #dropdownicon>
+                  <i class="pi pi-map" />
+                </template>
+                <template #header>
+                  <div class="font-medium p-3">Available atributes</div>
+                </template>
+                <template #footer>
+                  <div class="p-3">
+                    <Button
+                      label="Add New"
+                      @click="field.functionAdd(data.id)"
+                      fluid
+                      severity="secondary"
+                      variant="text"
+                      size="small"
+                      icon="pi pi-plus"
+                    />
+                  </div>
+                </template>
+              </Select>
+
               <!-- Checkbox -->
-              <Checkbox 
+              <Checkbox
                 v-else-if="field.type === 'boolean'"
                 v-model="data[field.key]"
                 :binary="true"
@@ -101,32 +161,32 @@
 
         <!-- Columna de acciones -->
         <Column header="Acciones" style="width: 100px">
-    <template #body="{ index }">
+          <template #body="{ index }">
             <div class="action-buttons">
-              <Button 
-                icon="pi pi-trash" 
-                severity="danger" 
-                text 
+              <Button
+                icon="pi pi-trash"
+                severity="danger"
+                text
                 rounded
                 size="small"
                 @click="removeItem(index)"
                 v-tooltip="'Eliminar línea'"
               />
-              <Button 
+              <Button
                 v-if="index > 0"
-                icon="pi pi-arrow-up" 
-                severity="secondary" 
-                text 
+                icon="pi pi-arrow-up"
+                severity="secondary"
+                text
                 rounded
                 size="small"
                 @click="moveItemUp(index)"
                 v-tooltip="'Mover arriba'"
               />
-              <Button 
+              <Button
                 v-if="index < items.length - 1"
-                icon="pi pi-arrow-down" 
-                severity="secondary" 
-                text 
+                icon="pi pi-arrow-down"
+                severity="secondary"
+                text
                 rounded
                 size="small"
                 @click="moveItemDown(index)"
@@ -144,9 +204,9 @@
         <i class="pi pi-inbox text-6xl text-300 mb-3"></i>
         <h4>No hay registros</h4>
         <p>Haz clic en "Agregar Línea" para comenzar</p>
-        <Button 
-          icon="pi pi-plus" 
-          label="Agregar Primera Línea" 
+        <Button
+          icon="pi pi-plus"
+          label="Agregar Primera Línea"
           severity="primary"
           @click="addItem"
           class="mt-3"
@@ -156,7 +216,11 @@
 
     <!-- Totales estilo Odoo -->
     <div v-if="showTotals && items.length > 0" class="odoo-totals">
-      <div class="total-row" v-for="total in calculatedTotals" :key="total.label">
+      <div
+        class="total-row"
+        v-for="total in calculatedTotals"
+        :key="total.label"
+      >
         <span class="total-label">{{ total.label }}:</span>
         <span class="total-value">{{ total.value }}</span>
       </div>
@@ -165,21 +229,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch } from "vue";
 
-import type { Field } from '../types/Field';
+import type { Field } from "../types/Field";
 
 interface Props {
   title?: string;
   fields: Field[];
   initialData?: any[];
   showTotals?: boolean;
+  atributeDetails?: any[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  title: 'Líneas Detalladas',
+  title: "Líneas Detalladas",
   initialData: () => [],
-  showTotals: false
+  showTotals: false,
+  atributeDetails: () => [],
 });
 
 const emit = defineEmits<{
@@ -187,45 +253,50 @@ const emit = defineEmits<{
   itemAdded: [item: any];
   itemRemoved: [index: number];
   itemChanged: [item: any, field: string];
+  addNew: [];
 }>();
 
 const items = ref<any[]>([]);
 let nextId = 1;
 
 // Inicializar con datos si existen
-watch(() => props.initialData, (newData) => {
-  items.value = newData.map(item => ({
-    id: nextId++,
-    ...item
-  }));
-}, { immediate: true });
+watch(
+  () => props.initialData,
+  (newData) => {
+    items.value = newData.map((item) => ({
+      id: nextId++,
+      ...item,
+    }));
+  },
+  { immediate: true }
+);
 
 // Totales calculados
 const calculatedTotals = computed(() => {
   if (!props.showTotals) return [];
-  
+
   const totals: { label: string; value: string }[] = [];
-  
-  props.fields.forEach(field => {
-    if (field.total && field.type === 'number') {
+
+  props.fields.forEach((field) => {
+    if (field.total && field.type === "number") {
       const sum = items.value.reduce((acc, item) => {
         return acc + (Number(item[field.key]) || 0);
       }, 0);
-      
+
       totals.push({
         label: `Total ${field.label}`,
-        value: new Intl.NumberFormat('es-GT', {
-          style: 'currency',
-          currency: 'GTQ'
-        }).format(sum)
+        value: new Intl.NumberFormat("es-GT", {
+          style: "currency",
+          currency: "GTQ",
+        }).format(sum),
       });
     }
   });
 
   // Total de líneas
   totals.push({
-    label: 'Total Líneas',
-    value: items.value.length.toString()
+    label: "Total Líneas",
+    value: items.value.length.toString(),
   });
 
   return totals;
@@ -234,34 +305,40 @@ const calculatedTotals = computed(() => {
 // Métodos
 const addItem = () => {
   const newItem: any = { id: nextId++ };
-  
+
   // Inicializar campos con valores por defecto
-  props.fields.forEach(field => {
+  props.fields.forEach((field) => {
     switch (field.type) {
-      case 'text':
-        newItem[field.key] = '';
+      case "text":
+        newItem[field.key] = "";
         break;
-      case 'number':
+      case "number":
         newItem[field.key] = 0;
         break;
-      case 'boolean':
+      case "boolean":
         newItem[field.key] = false;
         break;
-      case 'selection':
+      case "selection":
         newItem[field.key] = null;
+        break;
+      case "selectionadd":
+        newItem[field.key] = {
+          value: "",
+          options: field.options,
+        };
         break;
     }
   });
 
   items.value.push(newItem);
-  emit('itemAdded', newItem);
-  emit('change', items.value);
+  emit("itemAdded", newItem);
+  emit("change", items.value);
 };
 
 const removeItem = (index: number) => {
   items.value.splice(index, 1);
-  emit('itemRemoved', index);
-  emit('change', items.value);
+  emit("itemRemoved", index);
+  emit("change", items.value);
 };
 
 const moveItemUp = (index: number) => {
@@ -269,7 +346,7 @@ const moveItemUp = (index: number) => {
     const item = items.value[index];
     items.value.splice(index, 1);
     items.value.splice(index - 1, 0, item);
-    emit('change', items.value);
+    emit("change", items.value);
   }
 };
 
@@ -278,13 +355,40 @@ const moveItemDown = (index: number) => {
     const item = items.value[index];
     items.value.splice(index, 1);
     items.value.splice(index + 1, 0, item);
-    emit('change', items.value);
+    emit("change", items.value);
   }
 };
 
 const onFieldChange = (item: any, fieldKey: string) => {
-  emit('itemChanged', item, fieldKey);
-  emit('change', items.value);
+  console.log("Field changed:", fieldKey, "New value:", item[fieldKey]);
+  emit("itemChanged", item, fieldKey);
+  emit("change", items.value);
+};
+
+const updateFieldOptions = (
+  fieldKey: number,
+  campo: string,
+  options: any[]
+) => {
+  const item = items.value.find((it) => it.id === fieldKey);
+  if (item) {
+    const newOptions = props.atributeDetails
+      .filter(
+        (ad: any) =>
+          ad.atribute_id === items.value[fieldKey - 1].atribute.value.value
+      )
+      .map((ad: any) => {
+        return {
+          label: ad.atribute_detail_description,
+          value: ad.atribute_detail_id,
+        };
+      });
+    console.log("newOptions", newOptions);
+    items.value[fieldKey - 1].atribute2.options = newOptions;
+    /* 
+    item[campo].options = options;
+ */ emit("change", items.value);
+  }
 };
 
 // Exponer métodos para el padre
@@ -293,8 +397,10 @@ defineExpose({
   addItem,
   clearItems: () => {
     items.value = [];
-    emit('change', items.value);
-  }
+    ``;
+    emit("change", items.value);
+  },
+  updateFieldOptions,
 });
 </script>
 
