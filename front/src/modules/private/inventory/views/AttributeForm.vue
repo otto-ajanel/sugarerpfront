@@ -84,19 +84,23 @@
               />
 
               <Select
+                editable
                 v-else-if="field.type === 'selectionadd'"
-                v-model="data[field.key]"
-                :options="field.options"
+                v-model="data[field.key].value"
+                :options="data[field.key].options"
                 optionLabel="label"
                 placeholder="Select a atrobite"
                 class="w-full md:w-56"
+                @change="onFieldChange(data, field.key)"
               >
                 <template #value="slotProps">
                   <div v-if="slotProps.value" class="flex items-center">
                     <img
                       :alt="slotProps.value.label"
                       src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
-                      :class="`mr-2 flag flag-${slotProps.value.toLowerCase()}`"
+                      :class="`mr-2 flag flag-${slotProps.value
+                        .toString()
+                        .toLowerCase()}`"
                       style="width: 18px"
                     />
                     <div>{{ slotProps.value.label }}</div>
@@ -110,7 +114,9 @@
                     <img
                       :alt="slotProps.option.label"
                       src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
-                      :class="`mr-2 flag flag-${slotProps.option.value.toString().toLowerCase()}`"
+                      :class="`mr-2 flag flag-${slotProps.option.value
+                        .toString()
+                        .toLowerCase()}`"
                       style="width: 18px"
                     />
                     <div>{{ slotProps.option.label }}</div>
@@ -126,7 +132,7 @@
                   <div class="p-3">
                     <Button
                       label="Add New"
-                      @click="emit('addNew')"
+                      @click="field.functionAdd(data.id)"
                       fluid
                       severity="secondary"
                       variant="text"
@@ -232,12 +238,14 @@ interface Props {
   fields: Field[];
   initialData?: any[];
   showTotals?: boolean;
+  atributeDetails?: any[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
   title: "Líneas Detalladas",
   initialData: () => [],
   showTotals: false,
+  atributeDetails: () => [],
 });
 
 const emit = defineEmits<{
@@ -314,7 +322,10 @@ const addItem = () => {
         newItem[field.key] = null;
         break;
       case "selectionadd":
-        newItem[field.key] = null;
+        newItem[field.key] = {
+          value: "",
+          options: field.options,
+        };
         break;
     }
   });
@@ -349,8 +360,35 @@ const moveItemDown = (index: number) => {
 };
 
 const onFieldChange = (item: any, fieldKey: string) => {
+  console.log("Field changed:", fieldKey, "New value:", item[fieldKey]);
   emit("itemChanged", item, fieldKey);
   emit("change", items.value);
+};
+
+const updateFieldOptions = (
+  fieldKey: number,
+  campo: string,
+  options: any[]
+) => {
+  const item = items.value.find((it) => it.id === fieldKey);
+  if (item) {
+    const newOptions = props.atributeDetails
+      .filter(
+        (ad: any) =>
+          ad.atribute_id === items.value[fieldKey - 1].atribute.value.value
+      )
+      .map((ad: any) => {
+        return {
+          label: ad.atribute_detail_description,
+          value: ad.atribute_detail_id,
+        };
+      });
+    console.log("newOptions", newOptions);
+    items.value[fieldKey - 1].atribute2.options = newOptions;
+    /* 
+    item[campo].options = options;
+ */ emit("change", items.value);
+  }
 };
 
 // Exponer métodos para el padre
@@ -358,9 +396,11 @@ defineExpose({
   getItems: () => items.value,
   addItem,
   clearItems: () => {
-    items.value = [];``
+    items.value = [];
+    ``;
     emit("change", items.value);
   },
+  updateFieldOptions,
 });
 </script>
 

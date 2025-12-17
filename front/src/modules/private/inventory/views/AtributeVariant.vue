@@ -3,25 +3,35 @@
 
     <div class="mt-6">
       <AttributeForm
+      ref="chilRefAtribute"
         title="Atributo del producto"
         :fields="productFields"
         :initial-data="initialProductData"
+        :atributeDetails="atributeDetails"
         @change="onProductDetailsChange"
+        @itemChanged="(val)=>changeItem(val)"
         @addNew="fnShowModalAtribute"
       />
     </div>
-    <CreateAtribute />
+    <CreateAtribute :getAtributes="getAtributes"/>
+    <AtributeDetailModal />
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, computed } from 'vue';
+import { defineAsyncComponent, onMounted, computed, ref } from 'vue';
 import type { Field } from '../types/Field';
 import useAtribute from '../../../../composables/modules/product/atributeComposable';
+import useAtributeDetail from '../../../../composables/modules/product/atributeDetailComposable';
 
-const {setShowModalAtribute, atributes, getAtributes} = useAtribute()
+const {atributeDetails} = useAtributeDetail();
+const {setShowModalAtribute, atributes, getAtributes, setShowModalAtributeDet} = useAtribute()
 const AttributeForm = defineAsyncComponent(() => import('./AttributeForm.vue'));
 const CreateAtribute = defineAsyncComponent(() => import('./CreateAtribute.vue'));
+const AtributeDetailModal = defineAsyncComponent(() => import('../../billing/AtributeDetailModal.vue'));
+
+const chilRefAtribute = ref<InstanceType<typeof AttributeForm> | null>(null);
+
 
 const fnShowModalAtribute = () => {
   setShowModalAtribute(true)
@@ -31,12 +41,23 @@ onMounted(async () => {
   await getAtributes();
 });
 
+function function1() {
+
+  fnShowModalAtribute()
+}
+
+function function2(valueKey:any) {
+  console.log('Function 2 called', valueKey);
+  setShowModalAtributeDet(true)
+}
+
 // Campos para detalles de producto
 const productFields = computed((): Field[] =>  [
   {
     key: 'atribute',
     label: 'Atribute',
     type: 'selectionadd',
+    functionAdd: function1,
     options: atributes.value.map((attr) => {
       return {  
       label: attr.atribute_des,
@@ -46,12 +67,14 @@ const productFields = computed((): Field[] =>  [
   {
     key: 'atribute2',
     label: 'Detalle de atributo',
-    type: 'selection',
+    type: 'selectionadd',
+    functionAdd: function2,
     options: [
-      { label: 'atribute uno ', value: 'atribute1' },
-      { label: 'atribute dos', value: 'atribute2' } 
- 
-    ]
+    {
+      label: 'label1',
+      value: 'value1'
+    }
+  ]
   },
   {
     key: 'active',
@@ -60,7 +83,8 @@ const productFields = computed((): Field[] =>  [
   }
 ]);
 
-const initialProductData = [];
+
+const initialProductData:any = [];
 
 // Event handlers
 const onInvoiceLinesChange = (items: any[]) => {
@@ -82,4 +106,33 @@ const onItemRemoved = (index: number) => {
 const onItemChanged = (item: any, field: string) => {
   console.log('Campo cambiado:', field, 'Nuevo valor:', item[field]);
 };
+
+const changeItem = (val:any) => {
+
+ /*  productFields.value[val.id].['id'].options= [
+    {
+      label: 'label2',
+      value: 'value2'
+    }
+  ] */
+
+  /* initialProductData[val.id].atribute2.options= [
+    {
+      label: 'label2',
+      value: 'value2'
+    }
+  ] */
+  console.log('Item changed:', val);
+  console.log(initialProductData)
+  chilRefAtribute.value?.updateFieldOptions(val.id, 'atribute2', [
+    {
+      label: 'label2',
+      value: 'value2'
+    }
+  ]);
+
+}
+
+
+
 </script>

@@ -23,9 +23,11 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue';
+
 import type { Field } from '../types/Field';
 
 const AttributeForm = defineAsyncComponent(() => import('./AttributeForm.vue'));
+
 
 // Campos para líneas de factura
 const invoiceFields: Field[] = [

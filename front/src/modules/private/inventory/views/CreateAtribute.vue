@@ -14,14 +14,13 @@
         class="flex flex-col gap-4 w-full  "
       >
         <div class="flex flex-col gap-1">
-          <InputText name="atribute" type="text" placeholder="Atributo " fluid />
+          <InputText v-model="initialValues.atribute" name="atribute" type="text" placeholder="Atributo " fluid />
           <Message
             v-if="$form.atribute?.invalid"
             severity="error"
             size="small"
             variant="simple"
-            >{{ $form.atribute.error.message }}</Message
-          >
+            >{{ $form.atribute.error.message }}</Message>
         </div>
         <Button type="submit" raised label="Crear atributo" />
       </Form>
@@ -34,6 +33,11 @@ import { ref } from "vue";
 import { zodResolver } from "@primevue/forms/resolvers/zod";
 import useAtribute from "../../../../composables/modules/product/atributeComposable";
 import * as z from "zod";
+import { useToast } from "primevue/usetoast";
+
+const toast = useToast();
+const { createAtribute,showModalAtribute } = useAtribute();
+
 const initialValues = ref({
   atribute: "",
 });
@@ -46,7 +50,21 @@ const resolver = ref(
     })
   )
 );
-
-async function onFormSubmit(values: any) {}
-const { showModalAtribute, setShowModalAtribute } = useAtribute();
+const props = defineProps<{
+  getAtributes: () => Promise<void>;
+}>(); 
+async function onFormSubmit() {
+  if (initialValues.value.atribute.toString().trim() === "") {
+    toast.add({
+      severity: "error",
+      summary: "Error",
+      detail: "El campo atributo es obligatorio",
+      life: 3000,
+    });
+    return;
+    
+  }
+  await createAtribute({AtributeDes: initialValues.value.atribute, AtributeTypedata:'text'});
+  await props.getAtributes();
+}
 </script>
