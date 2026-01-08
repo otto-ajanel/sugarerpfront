@@ -59,10 +59,11 @@ app.use(PrimeVue, { theme:{
             darkModeSelector: '.p-dark',
             cssLayer: false,
         }
-},
-ripple: true
+    },
+    ripple: true
+    
+});
 
- });
 app.use(pinia)
 app.use(router)
 app.use(ToastService)

@@ -83,6 +83,10 @@ const productFields = computed((): Field[] =>  [
   }
 ]);
 
+const props = defineProps<{
+  setAtributeVariants: (variants:any) => void;
+}>();
+
 
 const initialProductData:any = [];
 
@@ -93,6 +97,7 @@ const onInvoiceLinesChange = (items: any[]) => {
 
 const onProductDetailsChange = (items: any[]) => {
   console.log('Detalles de producto actualizados:', items);
+  props.setAtributeVariants(items);
 };
 
 const onItemAdded = (item: any) => {
@@ -109,21 +114,6 @@ const onItemChanged = (item: any, field: string) => {
 
 const changeItem = (val:any) => {
 
- /*  productFields.value[val.id].['id'].options= [
-    {
-      label: 'label2',
-      value: 'value2'
-    }
-  ] */
-
-  /* initialProductData[val.id].atribute2.options= [
-    {
-      label: 'label2',
-      value: 'value2'
-    }
-  ] */
-  console.log('Item changed:', val);
-  console.log(initialProductData)
   chilRefAtribute.value?.updateFieldOptions(val.id, 'atribute2', [
     {
       label: 'label2',

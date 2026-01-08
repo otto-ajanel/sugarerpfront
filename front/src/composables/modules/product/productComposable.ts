@@ -8,6 +8,7 @@ export function  useProduct() {
     const products= ref<any[]>([]);
 
     const {saveData, getData} = useApi();
+    let  files = reactive<({})>({});
     const formProduct= reactive({
         nameProduct: '',
         enableFor:{
@@ -16,7 +17,7 @@ export function  useProduct() {
             purchase: false,
             others: false
         },
-        typeproduct:"goods",
+        typeproduct:0,
         billingPolicy:null,
         categoryId: 0,
         trackInventory: false,
@@ -24,26 +25,41 @@ export function  useProduct() {
         salePrice: 0,
         taxsale: 0,
         costPrice: 0,
-        taxpurchase: 0
-        
+        taxpurchase: 0,
+        atribute_variants: null as any[] | null 
 
     });
     const readproduct =ref(false);
 
     function fnCreateProduct() {
+        let product:any
         if (valideProduc()){
-            saveData('/product',formProduct).then((res:any)=>{
+            formProduct.atribute_variants= formProduct.atribute_variants!=null ? formProduct.atribute_variants.map((i)=>{
+                console.log(i);
+                return {atribute:i.atribute.value, active:i.active, atribute2:i.atribute2.value}
+            
+                })  : null;
+
+            saveData('product',formProduct).then((res:any)=>{
                 if(res.status==200){
+                    product=res.data;
                     toast.add({ severity: 'success'  , summary: 'Success', detail: 'Producto creado con éxito', life: 3050 });   
                 }else{
                     toast.add({ severity: 'error'  , summary: 'Error', detail: res.message, life: 3050 });   
                 }
             })
+         saveFiles(product)
             
         }else{
             toast.add({ severity: 'error'  , summary: 'Error', detail: 'Complete los campos requeridos', life: 3050 });   
         }
         
+    }
+
+    async function saveFiles(product:any){
+        console.log(files)
+        
+
     }
 
     function fnGetProducts(){
@@ -59,9 +75,15 @@ export function  useProduct() {
             return true
         }
 
-    
         return false
 
+    }
+
+    function setFilesForm(FormFiles:any){
+        files = FormFiles;
+    }
+    function setAtributeVariants(variants:any){
+        formProduct.atribute_variants=variants;
     }
 
     return {
@@ -69,6 +91,8 @@ export function  useProduct() {
         readproduct,
         fnCreateProduct,
         fnGetProducts,
-        products
+        products,
+        setFilesForm,
+        setAtributeVariants
     };
 }
