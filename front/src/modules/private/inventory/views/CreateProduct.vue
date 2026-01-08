@@ -78,7 +78,7 @@
                       <RadioButton
                         v-model="formProduct.typeproduct"
                         inputId="ingredient1"
-                        value="1"
+                        :value="1"
                       />
                       <label for="ingredient1">Bienes</label>
                     </div>
@@ -86,7 +86,7 @@
                       <RadioButton
                         v-model="formProduct.typeproduct"
                         inputId="ingredient2"
-                        value="2"
+                        :value="2"
                       />
                       <label for="ingredient2">Servicios</label>
                     </div>
@@ -94,7 +94,7 @@
                       <RadioButton
                         v-model="formProduct.typeproduct"
                         inputId="ingredient3"
-                        value="3"
+                        :value="3"
                       />
                       <label for="ingredient3">Combos</label>
                     </div>
@@ -245,16 +245,17 @@
             </div>
           </TabPanel>
           <TabPanel value="1">
-            <AtributeVariant />
+            <AtributeVariant :setAtributeVariants="setAtributeVariants" />
           </TabPanel>
           
           <TabPanel value="3">
             <FileUpload
               name="demo[]"
-              url="/api/upload"
               :multiple="true"
+              :showUploadButton="false"
               accept="image/*"
               :maxFileSize="1000000"
+              @select="uploadfiles"
             >
               <template #empty>
                 <span>Drag and drop files to here to upload.</span>
@@ -284,7 +285,7 @@ const  AtributeVariant = defineAsyncComponent(
 );
 const  Category = defineAsyncComponent(() => import("./Category.vue"));
 
-const { formProduct, fnCreateProduct } = useProduct();
+const { formProduct, fnCreateProduct, setFilesForm, setAtributeVariants } = useProduct();
 
 const { categories, getAllCategories } = useCategory();
 const { fnShowModalCategory } = uiStore();
@@ -306,6 +307,7 @@ watch(
 useToast();
 
 function saveProduct() {
+  
   fnCreateProduct();
 }
 
@@ -329,6 +331,11 @@ watch(()=>formProduct.barcode, generateBarcode);
 
 // Generar inicialmente
 onMounted(generateBarcode);
+
+function uploadfiles(event: any) {
+  
+  setFilesForm(event.files);
+}
 </script>
 
 <style scoped>
