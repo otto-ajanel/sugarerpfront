@@ -5,6 +5,8 @@
 html {
     font-size: 14px;
     line-height: normal;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
 }
 
 body {

@@ -37,3 +37,13 @@ console.log(new Date())
 //console.log(result["value"])
 
 </script>
+<style>
+
+.content-main {
+  background: var(--color-gray-50);
+  padding-bottom:1rem;
+  padding-top: 1rem;
+  padding-left: 2rem;
+  transition: background-color 0.3s ease;
+}
+</style>

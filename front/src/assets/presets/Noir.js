@@ -21,7 +21,7 @@ const Noir = definePreset(Aura, {
             light: {
                 primary: {
                 color: '{sky.900}',
-                contrastColor: '#ffffff',
+                contrastColor: '#ece7e7',
                 hoverColor: '{sky.900}',
                 activeColor: '{sky.800}'
                 },

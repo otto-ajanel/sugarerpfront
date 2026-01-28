@@ -20,11 +20,7 @@ const routes = [
             component: ()=>import('../modules/private/users/views/permisssions.vue'),
             name:'permissions'
         },
-       /*  {
-            path:'autorizations',
-            component: ()=>import('../modules/private/products/Views/indexView.vue'),
-            name:'autorizations'
-        }, */
+
         {
             path:'products',
             component: ()=>import('../modules/private/inventory/views/Products.vue'),
@@ -34,7 +30,28 @@ const routes = [
             path:'products/new',
             component: ()=>import('../modules/private/inventory/views/CreateProduct.vue'),
             name:'products-new'
+        },
+        {
+            path:'company',
+            component: ()=>import('../modules/private/company/views/index.vue'),
+            name:'company'
+        },
+        {
+            path:'stores',
+            component: ()=>import('../modules/private/store/views/store.vue'),
+            name:'stores'   
+        },
+        {
+            path:'incomes',
+            component: ()=>import('../modules/private/income/views/incomes.vue'),
+            name:'incomes'
+        },
+        {
+            path:'incomes/new',
+            component: ()=>import('../modules/private/income/views/incomeForm.vue'),
+            name:'incomes-new'
         }
+
     ]
 
     }
