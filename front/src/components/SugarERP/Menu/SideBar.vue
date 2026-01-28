@@ -21,7 +21,7 @@
           >
             <div
               class="flex items-center z-60 p-3 rounded-lg cursor-pointer hover:bg-primary hover:text-white dark:hover:bg-gray-700"
-              :class="{ 'border-b-2 border-primary dark:bg-primary': isMenuActive(menu) }"
+              :class="{ 'border-b-2 border-primary ': isMenuActive(menu) }"
               @click="toggleSubmenu(menu)"
             >
 
@@ -36,13 +36,13 @@
             <transition name="fade">
               <div
                 v-if="isCollapsed && activeHoverMenu === menu"
-                class="absolute top-0 left-16 ml-1 mt-2 bg-white text-primary dark:bg-gray-700 rounded-lg shadow-lg p-2 z-50 w-48"
+                class="absolute top-0 left-16 ml-1 mt-2 bg-white text-primary  rounded-lg shadow-lg p-2 z-50 w-48"
               >
                 <ul class="space-y-1">
                   <li v-for="submenu in menu.submenus" :key="submenu.id_menu">
                     <div
-                      class="flex items-center p-1 rounded-lg cursor-pointer hover:bg-primary hover:text-white dark:hover:bg-gray-600"
-                      :class="{ 'border-b-2 border-primary dark:bg-blue-500': isMenuActive(submenu) }"
+                      class="flex items-center p-2 rounded-lg cursor-pointer hover:bg-primary hover:text-white dark:hover:bg-gray-600"
+                      :class="{ 'border-b-2 border-primay ': isMenuActive(submenu) }"
                       @click="selectMenuItem(submenu)"
                     >
                       <li :class="[ 'pi '+ submenu.icon_menu, 'mr-2']" @click="uiStoreState.navigatePath(submenu.path_menu)"></li>
@@ -61,8 +61,8 @@
           >
             <li v-for="submenu in menu.submenus" :key="submenu.id_menu">
               <div
-                class="flex items-center p-1 cursor-pointer hover:bg-gray-50  dark:hover:bg-gray-600"
-                :class="{ 'border-b-1 p-0 border-primary-700 dark:bg-blue-500': isMenuActive(submenu) }"
+                class="flex items-center rounded-lg p-2 cursor-pointer hover:bg-primary hover:text-white dark:hover:bg-gray-600"
+                :class="{ 'border-b-2 border-primary ': isMenuActive(submenu) }"
                 @click="selectMenuItem(submenu)"
               >
                 <li

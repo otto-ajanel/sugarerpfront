@@ -39,6 +39,7 @@ import Image from 'primevue/image';
 import Drawer from 'primevue/drawer';
 import Message from 'primevue/message';
 import {Form} from '@primevue/forms';
+import DatePicker from "primevue/datepicker";
 
 // @ts-ignore
 import Aura from './assets/presets/Noir.js' 
@@ -101,6 +102,7 @@ app.component('Image', Image);
 app.component('Drawer', Drawer);
 app.component('Form', Form);
 app.component('Message', Message);
+app.component('DatePicker', DatePicker);
 
 
 
