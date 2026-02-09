@@ -73,8 +73,8 @@ export default function useIncomeComposable() {
         )
     }
     const getProducts = async () => {
-        const { data } = await getData('products', {})
-        products.value = data.products.map((product: any) => ({
+        const { data } = await getData('all-products', {})
+        products.value = data.map((product: any) => ({
             label: product.product_sku + " " + product.product_des,
             value: product.product_id
         })

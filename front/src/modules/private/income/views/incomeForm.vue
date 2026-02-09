@@ -127,7 +127,7 @@ const AttributeForm = defineAsyncComponent(() => import("./AttributeForm.vue"));
 const { formIncome, sendIncome, stores,suppliers, products, updateDetails, messageSendIncome } = useIncome();
 const toast = useToast();
 
-watch(
+watch( 
     () => messageSendIncome.open,
     (newVal) => {
         if (newVal) {

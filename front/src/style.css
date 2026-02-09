@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "tailwindcss-primeui";
+@plugin 'tailwindcss-primeui';
 @import "primeicons/primeicons.css";
 
 html {
@@ -18,4 +18,13 @@ body {
     font-weight: normal;
     color: var(--body-text-color);
     padding: 1rem;
+}
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
 }

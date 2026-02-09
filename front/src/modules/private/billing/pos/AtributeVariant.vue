@@ -10,14 +10,14 @@
       @item-changed="onItemChanged"
     />
 
-    <div class="mt-6">
+   <!--  <div class="mt-6">
       <AttributeForm
         title="Detalles de Producto"
         :fields="productFields"
         :initial-data="initialProductData"
         @change="onProductDetailsChange"
       />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -34,24 +34,24 @@ const invoiceFields: Field[] = [
   {
     key: 'product',
     label: 'Producto',
-    type: 'text',
+    type: 'label',
     placeholder: 'Nombre del producto'
   },
   {
     key: 'quantity',
     label: 'Cantidad',
-    type: 'number',
+    type: 'label',
     placeholder: '0.00',
     total: true
   },
   {
     key: 'price',
     label: 'Precio Unitario',
-    type: 'number',
+    type: 'label',
     placeholder: '0.00',
     total: true
   },
-  {
+ /*  {
     key: 'tax',
     label: 'Impuesto',
     type: 'selection',
@@ -60,13 +60,14 @@ const invoiceFields: Field[] = [
       { label: 'IVA 0%', value: 0 },
       { label: 'Exento', value: 'exempt' }
     ]
-  },
+  }, 
   {
     key: 'discount',
     label: 'Descuento',
     type: 'number',
     placeholder: '0.00'
   }
+  */
 ];
 
 // Campos para detalles de producto

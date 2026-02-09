@@ -1,5 +1,7 @@
 import { createApp } from "vue";
+import '../src/assets/layout/layout.scss'
 import "./style.css";
+
 import App from "./App.vue";
 import PrimeVue from "primevue/config";
 import StyleClass from "primevue/styleclass";
@@ -40,7 +42,8 @@ import Drawer from 'primevue/drawer';
 import Message from 'primevue/message';
 import {Form} from '@primevue/forms';
 import DatePicker from "primevue/datepicker";
-
+import SelectButton from "primevue/selectbutton";
+import DataView from "primevue/dataview";
 // @ts-ignore
 import Aura from './assets/presets/Noir.js' 
 import AnimateOnScroll from 'primevue/animateonscroll';
@@ -103,7 +106,8 @@ app.component('Drawer', Drawer);
 app.component('Form', Form);
 app.component('Message', Message);
 app.component('DatePicker', DatePicker);
-
+app.component('SelectButton',SelectButton)
+app.component('DataView',DataView)
 
 
 app.directive('animateonscroll', AnimateOnScroll);

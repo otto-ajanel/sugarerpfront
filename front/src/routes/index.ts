@@ -50,6 +50,11 @@ const routes = [
             path:'incomes/new',
             component: ()=>import('../modules/private/income/views/incomeForm.vue'),
             name:'incomes-new'
+        },
+        {
+            path:'sale-order',
+            component: ()=>import('../modules/private/inventory/views/ProductAvaliable.vue'),
+            name:'sale-order'
         }
 
     ]

@@ -33,7 +33,7 @@
         }"
       >
         <!-- Columna de secuencia -->
-        <Column header="#" style="width: 50px">
+        <Column header="#" style="width: auto">
           <template #body="{ index }">
             <div class="sequence-cell">
               {{ index + 1 }}
@@ -71,6 +71,14 @@
                 :placeholder="field.placeholder"
                 @value-change="onFieldChange(data, field.key)"
               />
+              <label
+                v-else-if="field.type == 'label'"
+                class="odoo-label"
+                :minFractionDigits="2"
+                :maxFractionDigits="2"
+                :placeholder="field.placeholder"
+                @value-change="onFieldChange(data, field.key)"
+              ></label>
 
               <!-- Dropdown -->
               <Dropdown 
@@ -101,7 +109,7 @@
         </Column>
 
         <!-- Columna de acciones -->
-        <Column header="Acciones" style="width: 100px">
+        <Column header="Acciones" style="width: auto">
     <template #body="{ index }">
             <div class="action-buttons">
               <Button 
@@ -383,11 +391,11 @@ defineExpose({
 }
 
 :deep(.odoo-input) {
-  width: 100%;
+  width: auto;
   border: 1px solid #cbd5e0;
   border-radius: 4px;
-  padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
+  max-width: auto;
 }
 
 :deep(.odoo-input:focus) {
