@@ -4,7 +4,9 @@ import { storeToRefs } from "pinia";
 const routes = [
       {
         path:'/',
-        component: ()=>import('../layouts/public.vue')
+        component: ()=>import('../layouts/public.vue'),
+        name:'home',
+
     }, 
      {
     path:'/erp',
@@ -53,7 +55,7 @@ const routes = [
         },
         {
             path:'sale-order',
-            component: ()=>import('../modules/private/inventory/views/ProductAvaliable.vue'),
+            component: ()=>import('../modules/private/billing/pos/ProductAvaliable.vue'),
             name:'sale-order'
         }
 
@@ -67,14 +69,16 @@ const routes = [
     history: createWebHistory(),
     routes
 })
-router.beforeEach((_,__, next)=>{
+router.beforeEach((to,__, next)=>{
 
     const {isAuth} = storeToRefs(authStore())
 
-    if (isAuth) {
+    console.log(isAuth.value)
+    if (isAuth.value) {
         next()
     }else{
-        next('/')
+        next()
+        //to.path === '/' ? next() : next('/')
     }
 })
 

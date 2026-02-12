@@ -134,7 +134,9 @@
                   <label for=""> Imagen de codigo de barra / QR </label>
                 </div>
                 <div class="flex justify-center items-center h-24" >
-                  <svg class="h-24" ref="barcode" v-if="formProduct.barcode.trim().length > 0"></svg>
+                  <svg 
+                  class="h-24"
+                  ref="barcode" v-if="formProduct.barcode.toString().trim().length > 0"></svg>
 
                 </div>
                 <!-- <img v-if="qrcode" :src="qrcode" alt="QR Code" /> -->
@@ -274,7 +276,7 @@
 
 <script lang="ts" setup>
 import { ref, watch, onMounted, defineAsyncComponent } from "vue";
-import JsBarcode from 'jsbarcode';
+import bwipjs from "bwip-js";
 import { useProduct } from "../../../../composables/modules/product/productComposable";
 import useCategory from "../../../../composables/modules/product/categoryComposable";
 import { uiStore } from "../../../../stores/uiStore";
@@ -311,18 +313,20 @@ function saveProduct() {
   fnCreateProduct();
 }
 
-const barcode = ref(null);
+const barcode = ref<SVGSVGElement | null>(null);
 
 const generateBarcode = () => {
   if (barcode.value && formProduct.barcode) {
-    JsBarcode(barcode.value, formProduct.barcode, {
-      format: 'CODE128',
-      width: 2,
-      height: 100,
-      displayValue: true,
-      text: formProduct.barcode,
-      fontOptions: 'bold'
-    });
+      const svg = bwipjs.toSVG({
+    bcid: 'code128',
+    text: formProduct.barcode.toString().trim(),
+    scale: 3,
+    height:6,
+    includetext: true,
+    textxalign: 'center',
+  });
+  barcode.value.innerHTML = svg;
+
   }
 };
 

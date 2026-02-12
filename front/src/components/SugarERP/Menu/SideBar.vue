@@ -1,7 +1,8 @@
 <template>
   <aside
+  v-if="moduleSelected?.menus"
     :class="[
-      'fixed top-15 left-0 h-screen bg-white text-primary transition-all duration-300 z-60 shadow-xl/30',
+      'fixed top-16 left-0 h-screen bg-white text-primary transition-all duration-300 z-60 shadow-xl/30',
       isCollapsed ? 'w-16' : 'w-64',
       
     ]"

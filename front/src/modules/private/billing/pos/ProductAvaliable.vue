@@ -1,6 +1,6 @@
 <template>
-  <div class="cardn flex flex-row">
-      <DataView :value="productsAviable" :layout="layout" class="w-5/8">
+  <div class="cardn flex flex-row max-h-screen gap-4">
+      <DataView :value="productsAviable" :layout="layout" class="w-5/8  stiky-top top-0" :paginator="true" :rows="10" :sortOrder="1" :sortField="'ProductDes'">
         <template #header>
           <div class="flex justify-end gap-3 ">
             <InputGroup>
@@ -33,7 +33,7 @@
         </template>
 
         <template #list="slotProps">
-          <div class="flex flex-col">
+          <div class="flex flex-col max-h-154 overflow-y-auto">
             <div v-for="(item, index) in slotProps.items" :key="index">
               <div
                 class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
@@ -102,7 +102,7 @@
         </template>
 
         <template #grid="slotProps">
-          <div class="grid grid-cols-12 gap-4">
+          <div class="grid grid-cols-12 gap-4 max-h-154 overflow-y-auto">
             <div
               v-for="(item, index) in slotProps.items"
               :key="index"
@@ -113,15 +113,15 @@
               >
                 <div class="bg-surface-50 flex justify-center rounded p-4">
                   <div class="relative mx-auto">
-                    <div style="max-width: 300px" class="w-full">
+                    <div style="max-width: 150px" class="w-full">
                       <img
                         v-if="!imageLoading[item.ProductId]"
                         class="rounded w-full img-active"
                         :src="imageUrls[item.ProductId] || getImageProduct(item.ProductId)"
                         :alt="item.ProductDes"
-                        style="max-width: 300px"
+                        style="max-width: 150px"
                       />
-                      <div v-else class="three-dots-loader flex items-center justify-center" style="height:200px">
+                      <div v-else class="three-dots-loader flex items-center justify-center" style="height:100px">
                         <span></span><span></span><span></span>
                       </div>
                     </div>
