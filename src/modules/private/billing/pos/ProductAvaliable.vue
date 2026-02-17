@@ -90,6 +90,7 @@
                       <Button
                         icon="pi pi-shopping-cart"
                         label="Add to Cart"
+                        @click="addToCar(item)"
                         :disabled="item.InventoryStatus === 'OUTOFSTOCK'"
                         class="flex-auto md:flex-initial whitespace-nowrap"
                       ></Button>
@@ -168,6 +169,7 @@
                       <Button
                         icon="pi pi-shopping-cart"
                         label="Add to Cart"
+                        @click="addToCar(item)"
                         :disabled="item.InventoryStatus === 'OUTOFSTOCK'"
                         class="flex-auto whitespace-nowrap"
                       ></Button>
@@ -180,18 +182,31 @@
           </div>
         </template>
       </DataView>
-      <AtributeVariant class="w-3/8"/>
+     <DetailOrder
+     ref="refDetailOrder"
+     class="w-3/8 "
+      title="Detalle de la orden"
+      :fields="invoiceFields"
+      :show-totals="true"
+      @change="onInvoiceLinesChange"
+      @item-added="onItemAdded"
+      @item-removed="onItemRemoved"
+      @item-changed="onItemChanged"
+    />
     </div>
 
 </template>
 
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import AtributeVariant from "../../billing/pos/AtributeVariant.vue"
-import useProductsAviable from "../../../../composables/modules/product/productAviableComposable";
+import { ref, onMounted, defineAsyncComponent, provide } from "vue";
+import useProductsAviable from "../../../../composables/modules/billing/productAviableComposable";
+import orderComposable from "../../../../composables/modules/billing/orderComposable";
+const DetailOrder = defineAsyncComponent(() => import('./DetailOrder.vue'));
 
-const {productsAviable, getImageProduct, imageLoading, imageUrls} = useProductsAviable();
+  const {productsAviable, getImageProduct, imageLoading, imageUrls} = useProductsAviable();
+  const order = orderComposable();
+  provide('order', order);
 
 const selectedItems = ref();
 const selectAll = ref(false);
@@ -205,19 +220,17 @@ const onChange = (event:any) => {
     selectAll.value = event.value.length === items.value.length;
 }
 
-/*
-    {
-      id: "1",
-      code: "f230fh0g3",
-      name: "Bamboo Watch",
-      description: "Product Description",
-      image: "bamboo-watch.jpg",
-      price: 65,
-      category: "Accessories",
-      quantity: 24,
-      inventoryStatus: "INSTOCK",
-      rating: 5,
-    }*/
+const refDetailOrder = ref(null)
+const addToCar=(item:any)=>{
+  if (item.locations.length==1 && refDetailOrder?.value.addItem) {
+
+    refDetailOrder.value.addItem(item)
+
+  }else{
+    console.log("Varias localizaciones")
+  }
+}
+
    
 const layout = ref("grid");
 const options = ref(["list", "grid"]);
@@ -237,6 +250,62 @@ const getSeverity = (product: any) => {
       return null;
   }
 };
+
+
+///// Detalles de la orden
+
+
+import type { Field } from './types/Field'
+
+
+
+// Campos para líneas de factura
+const invoiceFields: Field[] = [
+  {
+    key: 'product',
+    label: 'Producto',
+    type: 'label',
+    placeholder: 'Nombre del producto'
+  },
+  {
+    key: 'quantity',
+    label: 'Cantidad',
+    type: 'label',
+    placeholder: '0.00',
+    total: true
+  },
+  {
+    key: 'price',
+    label: 'Precio Unitario',
+    type: 'label',
+    placeholder: '0.00',
+    total: true
+  },
+];
+
+// Campos para detalles de producto
+
+// Event handlers
+const onInvoiceLinesChange = (items: any[]) => {
+  console.log('Líneas de factura actualizadas:', items);
+};
+
+const onProductDetailsChange = (items: any[]) => {
+  console.log('Detalles de producto actualizados:', items);
+};
+
+const onItemAdded = (item: any) => {
+  console.log('Nueva línea agregada:', item);
+};
+
+const onItemRemoved = (index: number) => {
+  console.log('Línea eliminada en índice:', index);
+};
+
+const onItemChanged = (item: any, field: string) => {
+  console.log('Campo cambiado:', field, 'Nuevo valor:', item[field]);
+};
+
 </script>
 <style>
 .card {

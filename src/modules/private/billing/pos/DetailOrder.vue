@@ -7,15 +7,7 @@
         <span class="header-title">{{ title }}</span>
         <Badge v-if="items.length > 0" :value="items.length" class="ml-2" />
       </div>
-      <div class="header-right">
-        <Button 
-          icon="pi pi-plus" 
-          label="Agregar Línea" 
-          severity="primary"
-          size="small"
-          @click="addItem"
-        />
-      </div>
+     
     </div>
 
     <!-- Tabla estilo Odoo -->
@@ -78,7 +70,7 @@
                 :maxFractionDigits="2"
                 :placeholder="field.placeholder"
                 @value-change="onFieldChange(data, field.key)"
-              ></label>
+              >{{data[field.key]}}</label>
 
               <!-- Dropdown -->
               <Dropdown 
@@ -113,6 +105,16 @@
     <template #body="{ index }">
             <div class="action-buttons">
               <Button 
+                icon="pi pi-plus" 
+                severity="primary" 
+                text 
+                rounded
+                size="small"
+                @click="plusQuantityItem(index)"
+                v-tooltip.bottom="'Aumentar 1'"
+
+              />
+              <Button 
                 icon="pi pi-trash" 
                 severity="danger" 
                 text 
@@ -120,6 +122,15 @@
                 size="small"
                 @click="removeItem(index)"
                 v-tooltip="'Eliminar línea'"
+              />
+              <Button 
+                icon="pi pi-minus" 
+                severity="danger" 
+                text 
+                rounded
+                size="small"
+                @click="lessQuantityItem(index)"
+                v-tooltip="'Disminuir 1'"
               />
               <Button 
                 v-if="index > 0"
@@ -153,13 +164,7 @@
         <i class="pi pi-inbox text-6xl text-300 mb-3"></i>
         <h4>No hay registros</h4>
         <p>Haz clic en "Agregar Línea" para comenzar</p>
-        <Button 
-          icon="pi pi-plus" 
-          label="Agregar Primera Línea" 
-          severity="primary"
-          @click="addItem"
-          class="mt-3"
-        />
+        
       </div>
     </div>
 
@@ -169,14 +174,26 @@
         <span class="total-label">{{ total.label }}:</span>
         <span class="total-value">{{ total.value }}</span>
       </div>
+       <Button 
+        color="primary"
+        label="Pagar"
+        fluid
+       />
     </div>
+    <Toast/>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
+import { useToast } from 'primevue/usetoast';
+ const toast =useToast()
+import type { Field } from './types/Field';
 
-import type { Field } from '../types/Field';
+import { inject } from 'vue';
+
+const order = inject<any>('order')!;
+const items = order.detailOrder;
 
 interface Props {
   title?: string;
@@ -198,7 +215,6 @@ const emit = defineEmits<{
   itemChanged: [item: any, field: string];
 }>();
 
-const items = ref<any[]>([]);
 let nextId = 1;
 
 // Inicializar con datos si existen
@@ -214,34 +230,35 @@ const calculatedTotals = computed(() => {
   if (!props.showTotals) return [];
   
   const totals: { label: string; value: string }[] = [];
-  
+    totals.push({
+    label: 'Total Líneas',
+    value: items.value.length.toString()
+  });
   props.fields.forEach(field => {
-    if (field.total && field.type === 'number') {
+    if (field.total && field.key === 'price') {
       const sum = items.value.reduce((acc, item) => {
-        return acc + (Number(item[field.key]) || 0);
+        return acc + (Number(item['quantity'])*(Number(item['price'])) || 0);
       }, 0);
       
       totals.push({
-        label: `Total ${field.label}`,
-        value: new Intl.NumberFormat('es-GT', {
+        label: `Precio total`,
+        value:  new Intl.NumberFormat('es-GT', {
           style: 'currency',
           currency: 'GTQ'
         }).format(sum)
       });
     }
+    
   });
 
   // Total de líneas
-  totals.push({
-    label: 'Total Líneas',
-    value: items.value.length.toString()
-  });
+
 
   return totals;
 });
 
 // Métodos
-const addItem = () => {
+const addItem = (productData:any, quantity=1) => {
   const newItem: any = { id: nextId++ };
   
   // Inicializar campos con valores por defecto
@@ -256,20 +273,59 @@ const addItem = () => {
       case 'boolean':
         newItem[field.key] = false;
         break;
+        case 'text':
+        newItem[field.key] = '';
+        break;
       case 'selection':
         newItem[field.key] = null;
         break;
     }
   });
+  const index =items.value.findIndex((i:any) =>i.product_id==productData.ProductId && i.store_id==productData.locations[0].store_id)
+  if(index!=-1){
+    if(items.value[index].quantity>= items.value[index].count_available){
+          toast.add({ severity: 'warn', summary: 'Inventario ', detail: 'Ya no cuenta con mas productos.', life: 3000 });
 
-  items.value.push(newItem);
-  emit('itemAdded', newItem);
+    }else{
+
+      items.value[index].quantity = items.value[index].quantity + quantity
+    }
+  }else{
+
+    newItem['product']=productData.ProductDes
+    newItem['quantity']=quantity
+    newItem['product_id']= productData.ProductId
+    newItem['store_id']= productData.locations[0].store_id
+    newItem['price']= productData.Price 
+    newItem['count_available']=productData.locations[0].count_available
+    items.value.push(newItem);
+    emit('itemAdded', newItem);
+  }
   emit('change', items.value);
 };
 
 const removeItem = (index: number) => {
   items.value.splice(index, 1);
   emit('itemRemoved', index);
+  emit('change', items.value);
+};
+const plusQuantityItem = (index: number) => {
+  
+  if(items.value[index].quantity>=items.value[index].count_available){
+          toast.add({ severity: 'warn', summary: 'Inventario ', detail: 'Ya no cuenta con mas productos.', life: 3000 });
+
+  }else{
+    items.value[index].quantity+=1
+  }
+
+  emit('change', items.value);
+};
+
+const lessQuantityItem = (index: number) => {
+  items.value[index].quantity -=1
+  if(items.value[index].quantity<=0){
+    removeItem(index)
+  }
   emit('change', items.value);
 };
 
