@@ -2,7 +2,7 @@
   <aside
   v-if="moduleSelected?.menus"
     :class="[
-      'fixed top-16 left-0 h-screen bg-white text-primary transition-all duration-300 z-60 shadow-xl/30',
+      'fixed top-16 left-0 h-screen bg-white text-primary transition-all duration-300 z-60 shadow-xl/30 md:visible',
       isCollapsed ? 'w-16' : 'w-64',
       
     ]"

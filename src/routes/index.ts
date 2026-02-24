@@ -18,6 +18,12 @@ const routes = [
             name:'users'
         },
         {
+            path:'user-new',
+            component: ()=>import('../modules/private/users/views/userNew.vue'),
+            name:'user-new'
+        },
+        
+        {
             path:'permissions',
             component: ()=>import('../modules/private/users/views/permisssions.vue'),
             name:'permissions'

@@ -28,3 +28,8 @@ body {
     border-color: var(--color-gray-200, currentcolor);
   }
 }
+
+label{
+  font-size: 14px !important;
+  
+}

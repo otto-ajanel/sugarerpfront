@@ -3,13 +3,14 @@
     <SideBar/>
     <div class="content-main">
       <RouterView
-      class="ml-24 z-30 mt-16"/>
+      class="md:ml-24 z-20 md:mt-16 mt-16 "/>
     </div>
 </template>
 <script setup lang="ts">
-import MenuSugarERP from "../../src/components/SugarERP/Menu/index.vue"
-import SideBar from "../components/SugarERP/Menu/SideBar.vue";
+import { defineAsyncComponent } from "vue";
 
+const MenuSugarERP =defineAsyncComponent(()=>import('../../src/components/SugarERP/Menu/index.vue'))
+const SideBar = defineAsyncComponent(()=>import('../../src/components/SugarERP/Menu/SideBar.vue'))
 
 import { uiStore } from "../stores/uiStore";
 const {getModulesAndMenus} = uiStore()
@@ -30,7 +31,6 @@ query Users {
   }
 }
 `);  */
-console.log(new Date())
 
 //console.log(result["value"])
 
@@ -39,9 +39,10 @@ console.log(new Date())
 
 .content-main {
   background: var(--color-gray-50);
-  padding-bottom:1rem;
-  padding-top: 1rem;
+  padding-bottom:0rem;
+  padding-top: 0rem;
   padding-left: 2rem;
+  padding-right: 2rem;
   transition: background-color 0.3s ease;
 }
 </style>

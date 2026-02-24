@@ -1,6 +1,9 @@
 
 <template>
     <div class="card">
+        <RouterLink to="/erp/user-new">
+            <Button label="Nuevo usuario" severity="primary"/>
+        </RouterLink>
         <DataTable 
         lazy
         paginator
@@ -10,18 +13,25 @@
             @page="onPageChange"
             :rowsPerPageOptions="[5, 10, 20, 50]"
 
-        :value="users.data" :frozenValue="lockedCustomers" scrollable scrollHeight="600px" tableStyle="min-width: 50rem">
+        :value="users.users" :frozenValue="lockedCustomers" scrollable scrollHeight="600px" tableStyle="min-width: 50rem">
             <Column field="email" header="E mail"></Column>
             <Column field="username" header="User"></Column>
             <Column header="Status">
             <template #body="{data}">
                 {{  data.active ? 'Activo':'Desactivado' }}
             </template>
+            
             </Column>
-            <Column style="flex: 0 0 4rem">
-                <template #body="{ data, frozenRow, index }">
-                    <Button type="button" :disable="frozenRow ? null : lockedCustomers.length >= 2" @click="toggleLock(data, frozenRow, index) " class="disabled:opacity-50">
+            <Column style="flex: 0 0 4rem;" class="flex gap-2" header="Acciones">
+                <template #body="{ data, frozenRow, index }" >
+                    <Button  :disable="frozenRow ? null : lockedCustomers.length >= 2" @click="toggleLock(data, frozenRow, index) " class="disabled:opacity-50">
                         <i :class="frozenRow ? 'pi pi-lock-open' : 'pi pi-lock'" />
+                    </Button>
+                    <Button severity="danger" type="button" :disable="frozenRow ? null : lockedCustomers.length >= 2" @click="toggleLock(data, frozenRow, index) " class="disabled:opacity-50">
+                        <i :class="frozenRow ? 'pi pi-trash' : 'pi pi-trash'" />
+                    </Button>
+                    <Button severity="secondary" >
+                        <i :class="frozenRow ? 'pi pi-pencil' : 'pi pi-pencil'" />
                     </Button>
                 </template>
             </Column>
@@ -33,6 +43,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import permisionsState from '../../../../composables/modules/users/permisionsComposable';
+import { RouterLink } from 'vue-router';
 
 const { getUsers, users } =  permisionsState()
 const lazyParams = ref({
@@ -51,20 +62,21 @@ watch(users, (newUsers:any) => {
     }
 });
 
-onMounted(() => {
-    getUsers(1);
+onMounted(async() => {
+    await getUsers(1);
 });
 
 // Manejar cambio de página
-const onPageChange = (event:any) => {
+const onPageChange =async (event:any) => {
     lazyParams.value = {
         ...lazyParams.value,
         first: event.first,
         rows: event.rows,
-        page: event.page
+        page: event.page + 1
     };
+    await getUsers(lazyParams.value.page)
     
-    //loadData();
+    
 };
 
 // Manejar ordenamiento (opcional)
@@ -77,9 +89,7 @@ const onPageChange = (event:any) => {
   //  loadData();
 }; */
 
-watch(()=>lazyParams.value.page,async(newvalue)=>{
-    await getUsers(newvalue+1)
-})
+
 
 
 
@@ -100,7 +110,10 @@ const toggleLock = (data:any, frozen:boolean, index:number) => {
         return val1.id < val2.id ? -1 : 1;
     });
 }; 
-onMounted(() => {
-  //  CustomerService.getCustomersMedium().then((data) => (customers.value = data));
-});
+
 </script>
+<style scoped>
+.card{
+    top:15px;
+}
+</style>

@@ -9,7 +9,12 @@ export default function useStoreComposable() {
 
     async function getStores() {
         const { data } = await getData('stores', {})
-        stores.value = data
+        stores.value = data.map((i:any)=>{
+            return {
+                name:i.store_name,
+                code:i.store_id
+            }
+        })
     }
 
     onMounted(() => {
