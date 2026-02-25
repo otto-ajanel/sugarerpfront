@@ -1,0 +1,35 @@
+@import "tailwindcss";
+@plugin 'tailwindcss-primeui';
+@import "primeicons/primeicons.css";
+
+html {
+    font-size: 14px;
+    line-height: normal;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+
+body {
+    margin: 0px;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: var(--body-bg);
+    font-weight: normal;
+    color: var(--body-text-color);
+    padding: 0rem;
+}
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+label{
+  font-size: 14px !important;
+  
+}
