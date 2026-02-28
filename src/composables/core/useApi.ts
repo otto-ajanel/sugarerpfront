@@ -14,6 +14,10 @@ export function useApi() {
         const data = await axios.post(apiUrl + "/api/v1/" + url, body, { headers: header });
         return data;
     }
+    async function editData(url:string, body:any){
+        const data = await axios.put(apiUrl + "/api/v1/" + url,body, { headers: header })
+        return data
+    }
 
         async function saveImage(url: String, body: any) {
             header["Content-Type"]='multipart/form-data'
@@ -31,7 +35,8 @@ export function useApi() {
         getData,
         saveData,
         saveImage,
-        getImage
+        getImage,
+        editData
     }
 }
 
